@@ -58,7 +58,7 @@ namespace GamblingMod
         {
             Log("Start Started", (bool)Main.debugging.SavedValue);
             instance = this;
-            TABLEHEIGHT = this.transform.GetChild(0).GetChild(15).localPosition.y;
+            TABLEHEIGHT = 0.9974f;
             dealerDeck = this.transform.GetChild(0).GetChild(16).gameObject;
             storedDeckOfCards = this.transform.GetChild(1).GetChild(0).gameObject;
             SetupRandom();
@@ -105,7 +105,7 @@ namespace GamblingMod
             if (!(bool)Main.useSeed.SavedValue)
             {
                 freePlayButton = LoadMenuButton("FreePlay",
-                    /*position*/ new Vector3(0f, TABLEHEIGHT - 0.045f, 0.6f),
+                    /*position*/ new Vector3(0f, TABLEHEIGHT - 0.05f, 0.6f),
                     /*rotation*/Quaternion.Euler(0, 0, 0),
                     /*scale*/ new Vector3(0.5f, 0.5f, 0.5f),
                     () =>

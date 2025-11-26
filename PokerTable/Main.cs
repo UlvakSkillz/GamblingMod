@@ -21,7 +21,7 @@ namespace GamblingMod
     public static class BuildInfo
     {
         public const string ModName = "GamblingMod";
-        public const string ModVersion = "2.1.1";
+        public const string ModVersion = "2.1.2";
         public const string Author = "UlvakSkillz";
     }
 
