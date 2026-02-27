@@ -5,7 +5,7 @@ using Il2CppRUMBLE.Pools;
 using Il2CppRUMBLE.UI;
 using Il2CppTMPro;
 using MelonLoader;
-using RumbleModdingAPI;
+using RumbleModdingAPI.RMAPI;
 using System.Collections;
 using UnityEngine;
 using Random = System.Random;
@@ -370,7 +370,7 @@ namespace GamblingMod
             Log("SetupButtons Completed", (bool)Main.debugging.SavedValue);
         }
 
-        [Calls.PhotonRPCs.PunRPC]
+        [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
         public void RPC_FreePlayPressed (bool isFreePlay)
         {
             SetFreePlay(isFreePlay);
@@ -493,7 +493,7 @@ namespace GamblingMod
             return (Main.GetPlayerCoinCount() >= betAmount);
         }
 
-        [Calls.PhotonRPCs.PunRPC]
+        [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
         public void RPC_BetButtonPressed(int button)
         {
             Log($"RPC_BetButtonPressed({button}) Called", (bool)Main.debugging.SavedValue);
@@ -973,7 +973,7 @@ namespace GamblingMod
             yield break;
         }
 
-        [Calls.PhotonRPCs.PunRPC]
+        [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
         public void RPC_RotateToNumber(int wheel, int num)
         {
             Log("RPC_RotateToNumber Called", (bool)Main.debugging.SavedValue);
@@ -1063,7 +1063,7 @@ namespace GamblingMod
             yield break;
         }
 
-        [Calls.PhotonRPCs.PunRPC]
+        [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
         public void RPC_RandomizeSlots(bool isFreePlay, int thisBetAmount, int num0, int num1, int num2, int num3, int num4, int num5, int num6, int num7, int num8, int num9, int num10, int num11, int num12, int num13, int num14, int num15, int num16, int num17, int num18, int num19, int num20, int num21, int num22, int num23, int num24, int num25, int num26, int num27, int num28, int num29)
         {
             Log("RPC_RandomizeSlots Called", (bool)Main.debugging.SavedValue);
@@ -1159,7 +1159,7 @@ namespace GamblingMod
         public GameObject LoadMenuButton(string title, Vector3 position, Quaternion rotation, Vector3 localScale, bool onButtonTop, Action listener = null)
         {
             Log("Loading Menu Button: " + title, (bool)Main.debugging.SavedValue);
-            GameObject button = (listener != null ? Calls.Create.NewButton(listener) : Calls.Create.NewButton());
+            GameObject button = (listener != null ? Create.NewButton(listener) : Create.NewButton());
             button.name = title + " Button";
             button.transform.SetParent(activeObjects.transform);
             button.transform.localPosition = new Vector3(position.x, position.y, position.z);
@@ -1173,7 +1173,7 @@ namespace GamblingMod
         public GameObject SpawnText(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale)
         {
             Log("Loading Text: " + title, (bool)Main.debugging.SavedValue);
-            GameObject text = Calls.Create.NewText();
+            GameObject text = Create.NewText();
             text.name = title + " Text";
             text.transform.SetParent(parent);
             text.transform.localPosition = position;
@@ -1190,7 +1190,7 @@ namespace GamblingMod
         public void LoadText(GameObject button, string title, bool onButtonTop)
         {
             Log("Loading Menu Button Text: " + title, (bool)Main.debugging.SavedValue);
-            GameObject text = Calls.Create.NewText();
+            GameObject text = Create.NewText();
             text.name = title + "Text";
             text.transform.SetParent(button.transform);
             text.transform.localPosition = onButtonTop ? new Vector3(0f, 0.01f, -0.22f) : new Vector3(-0.3f, 0f, 0f);

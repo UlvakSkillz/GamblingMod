@@ -23,7 +23,6 @@ C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.d
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.PhysicsModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Mono.Cecil.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppInterop.Common.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Microsoft.Extensions.Logging.Abstractions.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.AnimationModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.DirectorModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.AIModule.dll
@@ -47,7 +46,6 @@ C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.P
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.RenderPipelines.Universal.Runtime.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppPhotonVoice.API.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.InputSystem.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppLIV.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.RenderPipelines.Core.Runtime.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppPhotonVoice.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppPhotonChat.dll
@@ -71,7 +69,6 @@ C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Mono.Cecil.Ro
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\AsmResolver.PE.File.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppInterop.HarmonySupport.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.InputLegacyModule.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.AssetBundleModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.UIModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.TextCoreFontEngineModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.TextRenderingModule.dll
@@ -82,13 +79,10 @@ C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.TextCoreTextEngineModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.UIElementsModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.Physics2DModule.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.Numerics.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.SubsystemsModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppRUMBLE.Platform.Info.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppLIV.NativeAudioBridge.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.Net.Http.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppNativeGallery.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppNewtonsoft.Json.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.VisualEffectGraph.Runtime.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.RenderPipelines.GPUDriven.Runtime.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.RenderPipeline.Universal.ShaderLibrary.dll
@@ -99,14 +93,10 @@ C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.XR.Mana
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2Cppcom.rlabrecque.steamworks.net.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\WebSocketDotNet.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\MonoMod.Backports.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Microsoft.Diagnostics.NETCore.Client.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.PropertiesModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.HierarchyCoreModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.InputForUIModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.JSONSerializeModule.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.Runtime.Serialization.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.Data.dll
-C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.Xml.Linq.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.TerrainModule.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.Burst.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\MonoMod.ILHelpers.dll
@@ -118,3 +108,8 @@ C:\Users\austi\source\repos\PokerTable\PokerTable\obj\Debug\net6.0\refint\Gambli
 C:\Users\austi\source\repos\PokerTable\PokerTable\obj\Debug\net6.0\GamblingMod.pdb
 C:\Users\austi\source\repos\PokerTable\PokerTable\obj\Debug\net6.0\ref\GamblingMod.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\VoidLand.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.Profiling.Core.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Iced.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppLIV.LCKCore.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppLIV.LCKCore.ThirdParty.MessagePack.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.Numerics.dll

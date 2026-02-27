@@ -1,6 +1,6 @@
 ﻿using Il2CppTMPro;
 using MelonLoader;
-using RumbleModdingAPI;
+using RumbleModdingAPI.RMAPI;
 using System.Collections;
 using UnityEngine;
 using Random = System.Random;
@@ -180,7 +180,7 @@ namespace GamblingMod
         public GameObject LoadMenuButton(string title, Vector3 position, Quaternion rotation, Vector3 localScale, Action listener = null)
         {
             Log("Loading Menu Button: " + title, (bool)Main.debugging.SavedValue);
-            GameObject button = (listener != null ? Calls.Create.NewButton(listener) : Calls.Create.NewButton());
+            GameObject button = (listener != null ? Create.NewButton(listener) : Create.NewButton());
             button.name = title + " Button";
             button.transform.SetParent(this.transform.GetChild(2));
             button.transform.localPosition = new Vector3(position.x, position.y, position.z);
@@ -224,7 +224,7 @@ namespace GamblingMod
         public GameObject SpawnButton(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale, Action listener = null)
         {
             Log("Loading Button: " + title, (bool)Main.debugging.SavedValue);
-            GameObject button = (listener != null ? Calls.Create.NewButton(listener) : Calls.Create.NewButton());
+            GameObject button = (listener != null ? Create.NewButton(listener) : Create.NewButton());
             button.name = title + " Button";
             button.transform.SetParent(parent);
             button.transform.localPosition = position;
@@ -238,7 +238,7 @@ namespace GamblingMod
         public GameObject SpawnText(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale)
         {
             Log("Loading Text: " + title, (bool)Main.debugging.SavedValue);
-            GameObject text = Calls.Create.NewText();
+            GameObject text = Create.NewText();
             text.name = title + " Text";
             text.transform.SetParent(parent);
             text.transform.localPosition = position;
@@ -252,7 +252,7 @@ namespace GamblingMod
         public void LoadText(GameObject button, string title)
         {
             Log("Loading Menu Button Text: " + title, (bool)Main.debugging.SavedValue);
-            GameObject text = Calls.Create.NewText();
+            GameObject text = Create.NewText();
             text.name = title + "Text";
             text.transform.SetParent(button.transform);
             text.transform.localPosition = new Vector3(0f, 0f, -0.25f);

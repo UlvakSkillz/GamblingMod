@@ -10,7 +10,7 @@ using Il2CppRUMBLE.Players.Subsystems;
 using Il2CppRUMBLE.Poses;
 using Il2CppTMPro;
 using MelonLoader;
-using RumbleModdingAPI;
+using RumbleModdingAPI.RMAPI;
 using RumbleModUI;
 using System.Collections;
 using System.Security.Cryptography;
@@ -21,7 +21,7 @@ namespace GamblingMod
     public static class BuildInfo
     {
         public const string ModName = "GamblingMod";
-        public const string ModVersion = "2.1.2";
+        public const string ModVersion = "2.2.0";
         public const string Author = "UlvakSkillz";
     }
 
@@ -67,6 +67,7 @@ namespace GamblingMod
         private int lastdeckCount = 1;
         private int lastVolume = -1;
         private Material spinnerMaterial;
+        private static Shader URPUnlit;
 
         public static void Log(string msg, bool sendMsg = true)
         {
@@ -82,11 +83,11 @@ namespace GamblingMod
         
         public override void OnLateInitializeMelon()
         {
+            URPUnlit = Shader.Find("Universal Render Pipeline/Unlit");
             ModUIInit();
             logger = LoggerInstance;
             melonMod = this;
             Log("OnLateInitializeMelon Started", (bool)debugging.SavedValue);
-            Calls.onMapInitialized += MapInit;
             LoadSaveFile();
             LoadAssetBundle();
             MelonCoroutines.Start(GrabRumbleTextObject());
@@ -127,12 +128,12 @@ namespace GamblingMod
         private void LoadAssetBundle()
         {
             Log("LoadAssetBundle Started", (bool)debugging.SavedValue);
-            GameObject materialGO = GameObject.Instantiate(Calls.LoadAssetFromStream<GameObject>(this, BuildInfo.ModName + ".gambling", "Spinner"));
+            GameObject materialGO = GameObject.Instantiate(AssetBundles.LoadAssetFromStream<GameObject>(this, BuildInfo.ModName + ".gambling", "Spinner"));
             spinnerMaterial = (materialGO.GetComponent<MeshRenderer>().material);
             GameObject.DontDestroyOnLoad(materialGO);
             materialGO.name = "Gambling Mod Matierial Storage";
             materialGO.SetActive(false);
-            GameObject bundle = GameObject.Instantiate(Calls.LoadAssetFromStream<GameObject>(this, BuildInfo.ModName + ".gambling", "Poker"));
+            GameObject bundle = GameObject.Instantiate(AssetBundles.LoadAssetFromStream<GameObject>(this, BuildInfo.ModName + ".gambling", "Poker"));
             storedTable = bundle.transform.GetChild(0).gameObject;
             storedSlots = bundle.transform.GetChild(1).gameObject;
             storedTable.name = "PokerTable";
@@ -146,6 +147,25 @@ namespace GamblingMod
             finishedGymSetup = false;
             GameObject.Destroy(bundle);
             Log("LoadAssetBundle Completed", (bool)debugging.SavedValue);
+        }
+
+        private static void ChangeShaderLitToUnlit(GameObject asset)
+        {
+            Renderer parentRendderer = asset.GetComponent<Renderer>();
+            if (parentRendderer != null)
+            {
+                for (int i = 0; i < parentRendderer.materials.Length; i++)
+                {
+                    if (parentRendderer.materials[i].shader.name == "Universal Render Pipeline/Lit")
+                    {
+                        parentRendderer.materials[i].shader = URPUnlit;
+                    }
+                }
+            }
+            for (int i = 0; i < asset.transform.GetChildCount(); i++)
+            {
+                ChangeShaderLitToUnlit(asset.transform.GetChild(i).gameObject);
+            }
         }
 
         public void ModUIInit()
@@ -232,6 +252,7 @@ namespace GamblingMod
             foreach (AudioCall audioCall in storedAudioCalls)
             {
                 audioCall.generalSettings.SetVolume(volumeLevel / 100);
+                audioCall.spatialSettings.SpatialBlend = 1f;
             }
         }
 
@@ -242,17 +263,25 @@ namespace GamblingMod
             Log("UIInit Completed", (bool)debugging.SavedValue);
         }
 
-        public void MapInit()
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
-            Log("MapInit Started", (bool)debugging.SavedValue);
+            currentScene = sceneName;
+            if (currentScene == "Loader") { return; }
             if (logger == null)
             {
                 logger = LoggerInstance;
             }
-            currentScene = Calls.Scene.GetSceneName();
-            if ((currentScene != "Gym") && (currentScene != "Park")) { return; }
+            if ((currentScene != "Gym") && (sceneName != "Park")) { return; }
+            MelonCoroutines.Start(MapLoadCoroutine());
+        }
+
+        private IEnumerator MapLoadCoroutine()
+        {
+            Log("MapLoadCoroutine Started", (bool)debugging.SavedValue);
             if ((currentScene == "Gym") && (!finishedGymSetup))
             {
+                yield return new WaitForFixedUpdate();
+                FinishStoredTableSetup();
                 FinishStoredSlotsSetup();
                 if (GameObject.Find("/FlatLand/FlatLandButton/") != null)
                 {
@@ -263,6 +292,7 @@ namespace GamblingMod
                     voidLandFound = true;
                 }
                 SetupAudio();
+                finishedGymSetup = true;
             }
             if (currentScene == "Gym")
             {
@@ -293,7 +323,8 @@ namespace GamblingMod
             {
                 LoadSlots();
             }
-            Log("MapInit Completed", (bool)debugging.SavedValue);
+            Log("MapLoadCoroutine Completed", (bool)debugging.SavedValue);
+            yield break;
         }
 
         public static List<AudioCall> storedAudioCalls = new List<AudioCall>();
@@ -303,9 +334,9 @@ namespace GamblingMod
             storedAudioCalls.Clear();
             Transform playerController = PlayerManager.instance.localPlayer.Controller.transform;
             Transform visuals = playerController.GetChild(1);
-            Transform howard = Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.Howardroot.DummyRoot.Howard.GetGameObject().transform;
-            Transform progressTracker = Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ProgressTracker.GetGameObject().transform;
-            Transform gearMarket = Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.Gearmarket.GetGameObject().transform;
+            Transform howard = GameObjects.Gym.INTERACTABLES.Howard.DummyRoot.Howard.GetGameObject().transform;
+            Transform progressTracker = GameObjects.Gym.INTERACTABLES.ProgressTracker.GetGameObject().transform;
+            Transform gearMarket = GameObjects.Gym.INTERACTABLES.Gearmarket.GetGameObject().transform;
             storedAudioCalls.Add(AudioCall.Instantiate(howard.GetComponent<HowardFX>().movementAudioCall)); //Howard movement (chain sound)  /////// lever return
             storedAudioCalls[0].hideFlags = HideFlags.HideAndDontSave;
             storedAudioCalls.Add(AudioCall.Instantiate(gearMarket.GetComponent<GearMarket>().unlockClaimSFX)); //Gear Market Claim  ///// coin insert sound
@@ -347,39 +378,39 @@ namespace GamblingMod
             GameObject originalObject = null;
             while (originalObject == null)
             {
-                originalObject = GameObject.Find("/________________SCENE_________________/Text");
+                originalObject = GameObject.Find("/SCENE/Text");
                 yield return new WaitForFixedUpdate();
             }
             rumbleTextObject = new GameObject("RumbleText");
             GameObject newText = GameObject.Instantiate(originalObject.transform.GetChild(4).gameObject);
             newText.transform.SetParent(rumbleTextObject.transform);
             newText.transform.localPosition = new Vector3(0, 0, -5.3182f);
-            newText.transform.localRotation = originalObject.transform.localRotation;
+            newText.transform.localRotation = Quaternion.identity;
             newText.transform.localScale = originalObject.transform.localScale;
             newText = GameObject.Instantiate(originalObject.transform.GetChild(5).gameObject);
             newText.transform.SetParent(rumbleTextObject.transform);
             newText.transform.localPosition = new Vector3(0, 0, -2.7164f);
-            newText.transform.localRotation = originalObject.transform.localRotation;
+            newText.transform.localRotation = Quaternion.identity;
             newText.transform.localScale = originalObject.transform.localScale;
             newText = GameObject.Instantiate(originalObject.transform.GetChild(3).gameObject);
             newText.transform.SetParent(rumbleTextObject.transform);
             newText.transform.localPosition = new Vector3(0, 0, 0);
-            newText.transform.localRotation = originalObject.transform.localRotation;
+            newText.transform.localRotation = Quaternion.identity;
             newText.transform.localScale = originalObject.transform.localScale;
             newText = GameObject.Instantiate(originalObject.transform.GetChild(0).gameObject);
             newText.transform.SetParent(rumbleTextObject.transform);
             newText.transform.localPosition = new Vector3(0, 0, 2.7673f);
-            newText.transform.localRotation = originalObject.transform.localRotation;
+            newText.transform.localRotation = Quaternion.identity;
             newText.transform.localScale = originalObject.transform.localScale;
             newText = GameObject.Instantiate(originalObject.transform.GetChild(2).gameObject);
             newText.transform.SetParent(rumbleTextObject.transform);
             newText.transform.localPosition = new Vector3(0, 0, 4.6371f);
-            newText.transform.localRotation = originalObject.transform.localRotation;
+            newText.transform.localRotation = Quaternion.identity;
             newText.transform.localScale = originalObject.transform.localScale;
             newText = GameObject.Instantiate(originalObject.transform.GetChild(1).gameObject);
             newText.transform.SetParent(rumbleTextObject.transform);
             newText.transform.localPosition = new Vector3(0, 0, 6.605f);
-            newText.transform.localRotation = originalObject.transform.localRotation;
+            newText.transform.localRotation = Quaternion.identity;
             newText.transform.localScale = originalObject.transform.localScale;
             rumbleTextObject.transform.localScale = new Vector3(0.0001f, 0.001f, 0.001f);
             rumbleTextObject.SetActive(false);
@@ -393,7 +424,7 @@ namespace GamblingMod
             Log("FinishStoredSlotsSetup Started", (bool)debugging.SavedValue);
             //setup stored Slots Wheels
             //duplicate Revolving Numbers Collection
-            GameObject radialDials = GameObject.Instantiate(Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.RegionSelector.Model.Pin.Ping.RevolvingNumberCollection.GetGameObject());
+            GameObject radialDials = GameObject.Instantiate(GameObjects.Gym.INTERACTABLES.RegionSelector.Model.Pin.Ping.RevolvingNumberCollection.GetGameObject());
             radialDials.name = "RadialDials";
             radialDials.transform.SetParent(storedSlots.transform);
             radialDials.transform.localPosition = new Vector3(-0.543f, 1.115f, 0.017f);
@@ -430,13 +461,41 @@ namespace GamblingMod
             newSpinner.localScale = Vector3.one;
             SetupStoredSlotsSpinner(newSpinner);
 
-            finishedGymSetup = true;
+            ChangeShaderLitToUnlit(storedSlots);
+
             Log("FinishStoredSlotsSetup Completed", (bool)debugging.SavedValue);
+        }
+
+        private void FinishStoredTableSetup()
+        {
+            Log("FinishStoredTableSetup Started", (bool)debugging.SavedValue);
+
+            ChangeShaderLitToUnlit(storedTable);
+            storedTable.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = new Color(0.0969f, 0.9072f, 0.4112f);
+            storedTable.transform.GetChild(0).GetChild(2).localPosition = new Vector3(0f, -0.01f, 0f);
+            storedTable.transform.GetChild(0).GetChild(3).localPosition = new Vector3(0f, -0.01f, 0f);
+            storedTable.transform.GetChild(0).GetChild(14).localPosition = new Vector3(0f, -0.01f, 0f);
+            storedTable.transform.GetChild(0).GetChild(1).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(2).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(3).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(4).GetComponent<Renderer>().material.color = new Color(0.0969f, 0.9072f, 0.4112f);
+            storedTable.transform.GetChild(0).GetChild(5).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(6).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(7).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(8).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(9).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(10).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(11).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(12).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(13).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+            storedTable.transform.GetChild(0).GetChild(14).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
+
+            Log("FinishStoredTableSetup Completed", (bool)debugging.SavedValue);
         }
 
         public GameObject SpawnText(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale)
         {
-            GameObject text = Calls.Create.NewText();
+            GameObject text = Create.NewText();
             text.name = title + " Text";
             text.transform.SetParent(parent);
             text.transform.localPosition = position;
@@ -485,17 +544,18 @@ namespace GamblingMod
                 null,
                 null,
                 new Vector3(-0.021f, -0.005f, 0f) };
+            //output these calls below to check if valid
             GameObject[] slotObjectOriginals = {
                 rumbleTextObject,
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox.AdamantStone.Mesh.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox_.ChargeStone.Mesh.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox__.FlowStone.Gem101.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox___.GuardStone.Mesh.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox____.StubbornStone.Mesh.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox_____.SurgeStone.Mesh.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox______.VigorStone.Mesh.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.ShiftstoneCabinet.Cabinet.ShiftstoneBox_______.VolatileStone.Mesh.GetGameObject(),
-                Calls.GameObjects.Gym.LOGIC.Heinhouserproducts.Howardroot.DummyRoot.Howard.GetGameObject() };
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox.AdamantStone.Mesh.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox_.ChargeStone.Mesh.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox__.FlowStone.Gem101.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox___.GuardStone.Mesh.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox____.StubbornStone.Mesh.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox_____.SurgeStone.Mesh.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox______.VigorStone.Mesh.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Shiftstones.ShiftstoneCabinet.Cabinet.ShiftstoneBox_______.VolatileStone.Mesh.GetGameObject(),
+                GameObjects.Gym.INTERACTABLES.Howard.DummyRoot.Howard.GetGameObject() };
             for (int i = 0; i < 10; i++)
             {
                 //to point it towards the wheel edge correctly
@@ -563,8 +623,8 @@ namespace GamblingMod
                 case "Park":
                     GameObject table1 = GameObject.Instantiate(storedTable);
                     table1.name = "PokerTable";
-                    table1.transform.position = new Vector3(16.3591f, -2.6873f, -1.1611f);
-                    table1.transform.rotation = Quaternion.Euler(0, 186.289f, 0);
+                    table1.transform.position = new Vector3(16.5305f, -20.9391f, -20.8574f);
+                    table1.transform.rotation = Quaternion.Euler(0, 315.5508f, 0);
                     table1.SetActive(true);
                     table1.gameObject.AddComponent<PhotonView>().ViewID = 8008135;
                     tableList.Add(table1.AddComponent<Table>());
@@ -585,16 +645,16 @@ namespace GamblingMod
             {
                 case "Gym":
                     slots.name = "SlotMachine";
-                    slots.transform.position = new Vector3(2.3463f, -3.5255f, -11.3445f);
-                    slots.transform.rotation = Quaternion.Euler(0, 128f, 0);
+                    slots.transform.position = new Vector3(1.7463f, -3.4255f, -11.8445f);
+                    slots.transform.rotation = Quaternion.Euler(0, 133.8f, 0);
                     slots.SetActive(true);
                     slots.gameObject.AddComponent<PhotonView>().ViewID = 8008136;
                     slotsList.Add(slots.AddComponent<SlotMachine>());
                     break;
                 case "Park":
                     slots.name = "SlotMachine1";
-                    slots.transform.position = new Vector3(12.23f, -2.6873f, -1.2611f);
-                    slots.transform.rotation = Quaternion.Euler(0, 186.289f, 0);
+                    slots.transform.position = new Vector3(19.4876f, -20.9472f, -17.587f);
+                    slots.transform.rotation = Quaternion.Euler(0, 320.9668f, 0);
                     slots.SetActive(true);
                     int photonID = 8008136;
                     PhotonView photonView = slots.gameObject.AddComponent<PhotonView>();
@@ -603,8 +663,8 @@ namespace GamblingMod
                     slotsList.Add(slots.AddComponent<SlotMachine>());
                     slots = GameObject.Instantiate(storedSlots);
                     slots.name = "SlotMachine2";
-                    slots.transform.position = new Vector3(13.43f, -2.6873f, -1.3911f);
-                    slots.transform.rotation = Quaternion.Euler(0, 186.289f, 0);
+                    slots.transform.position = new Vector3(18.4876f, -20.9472f, -18.387f);
+                    slots.transform.rotation = Quaternion.Euler(0, 320.9668f, 0);
                     slots.SetActive(true);
                     photonView = slots.gameObject.AddComponent<PhotonView>();
                     photonView.ViewID = photonID;
@@ -612,8 +672,8 @@ namespace GamblingMod
                     slotsList.Add(slots.AddComponent<SlotMachine>());
                     slots = GameObject.Instantiate(storedSlots);
                     slots.name = "SlotMachine3";
-                    slots.transform.position = new Vector3(14.63f, -2.6873f, -1.5211f);
-                    slots.transform.rotation = Quaternion.Euler(0, 186.289f, 0);
+                    slots.transform.position = new Vector3(17.4876f, -20.9472f, -19.187f);
+                    slots.transform.rotation = Quaternion.Euler(0, 320.9668f, 0);
                     slots.SetActive(true);
                     photonView = slots.gameObject.AddComponent<PhotonView>();
                     photonView.ViewID = photonID;
