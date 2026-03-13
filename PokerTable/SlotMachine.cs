@@ -9,6 +9,7 @@ using RumbleModdingAPI.RMAPI;
 using System.Collections;
 using UnityEngine;
 using Random = System.Random;
+using AudioManager = Il2CppRUMBLE.Managers.AudioManager;
 
 namespace GamblingMod
 {
@@ -494,7 +495,7 @@ namespace GamblingMod
         }
 
         [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
-        public void RPC_BetButtonPressed(int button)
+        public void RPC_BetButtonPressed(short button)
         {
             Log($"RPC_BetButtonPressed({button}) Called", (bool)Main.debugging.SavedValue);
             BetButtonPressed(button);
@@ -974,7 +975,7 @@ namespace GamblingMod
         }
 
         [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
-        public void RPC_RotateToNumber(int wheel, int num)
+        public void RPC_RotateToNumber(short wheel, short num)
         {
             Log("RPC_RotateToNumber Called", (bool)Main.debugging.SavedValue);
             MelonCoroutines.Start(WaitForWheelSpinsToFinishThenSetFinalSpot(wheel, num));
@@ -1064,7 +1065,7 @@ namespace GamblingMod
         }
 
         [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
-        public void RPC_RandomizeSlots(bool isFreePlay, int thisBetAmount, int num0, int num1, int num2, int num3, int num4, int num5, int num6, int num7, int num8, int num9, int num10, int num11, int num12, int num13, int num14, int num15, int num16, int num17, int num18, int num19, int num20, int num21, int num22, int num23, int num24, int num25, int num26, int num27, int num28, int num29)
+        public void RPC_RandomizeSlots(bool isFreePlay, short thisBetAmount, short num0, short num1, short num2, short num3, short num4, short num5, short num6, short num7, short num8, short num9, short num10, short num11, short num12, short num13, short num14, short num15, short num16, short num17, short num18, short num19, short num20, short num21, short num22, short num23, short num24, short num25, short num26, short num27, short num28, short num29)
         {
             Log("RPC_RandomizeSlots Called", (bool)Main.debugging.SavedValue);
             SetFreePlay(isFreePlay);

@@ -21,7 +21,7 @@ namespace GamblingMod
     public static class BuildInfo
     {
         public const string ModName = "GamblingMod";
-        public const string ModVersion = "2.2.0";
+        public const string ModVersion = "2.2.3";
         public const string Author = "UlvakSkillz";
     }
 
@@ -186,6 +186,7 @@ namespace GamblingMod
             lastUseSeed = (bool)useSeed.SavedValue;
             UI.instance.UI_Initialized += UIInit;
             GamblingMod.ModSaved += Save;
+            Actions.onMapInitialized += MapLoaded;
         }
 
         private void Save()
@@ -263,16 +264,20 @@ namespace GamblingMod
             Log("UIInit Completed", (bool)debugging.SavedValue);
         }
 
-        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        private void MapLoaded(string map)
         {
-            currentScene = sceneName;
+            currentScene = map;
             if (currentScene == "Loader") { return; }
             if (logger == null)
             {
                 logger = LoggerInstance;
             }
-            if ((currentScene != "Gym") && (sceneName != "Park")) { return; }
+            if ((map != "Gym") && (map != "Park")) { return; }
             MelonCoroutines.Start(MapLoadCoroutine());
+        }
+
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
         }
 
         private IEnumerator MapLoadCoroutine()
@@ -283,11 +288,11 @@ namespace GamblingMod
                 yield return new WaitForFixedUpdate();
                 FinishStoredTableSetup();
                 FinishStoredSlotsSetup();
-                if (GameObject.Find("/FlatLand/FlatLandButton/") != null)
+                if (GameObject.Find("/FlatLand/") != null)
                 {
                     flatLandFound = true;
                 }
-                if (GameObject.Find("/VoidLand/VoidLandButton/") != null)
+                if (GameObject.Find("/VoidLand/") != null)
                 {
                     voidLandFound = true;
                 }
@@ -296,10 +301,11 @@ namespace GamblingMod
             }
             if (currentScene == "Gym")
             {
+                yield return new WaitForFixedUpdate();
                 if (flatLandFound)
                 {
                     //moves active objects when going to FlatLand
-                    GameObject.Find("/FlatLand/FlatLandButton/").transform.GetChild(0).GetComponent<InteractionButton>().onPressed
+                    GameObject.Find("/FlatLand/FlatLandButton/Button").GetComponent<InteractionButton>().onPressed
                         .AddListener(new Action(() =>
                         {
                             MelonCoroutines.Start(ControlOtherLandsTransition());
@@ -307,8 +313,7 @@ namespace GamblingMod
                 }
                 if (voidLandFound)
                 {
-                    //moves active objects when going to VoidLand
-                    GameObject.Find("/VoidLand/VoidLandButton/").transform.GetChild(0).GetComponent<InteractionButton>().onPressed
+                    GameObject.Find("/VoidLand/VoidLandButton/Button").GetComponent<InteractionButton>().onPressed
                         .AddListener(new Action(() =>
                         {
                             MelonCoroutines.Start(ControlOtherLandsTransition());
