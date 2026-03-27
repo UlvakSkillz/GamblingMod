@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GamblingMod")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+04c1fa2b91cadd97b773bd26d64370cc7ebeaf0f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+80e37d338d4376dca6e18fa37345b1fd90cbe291")]
 [assembly: System.Reflection.AssemblyProductAttribute("GamblingMod")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GamblingMod")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -863,22 +863,26 @@ namespace GamblingMod
             {
                 for (int j = 0; j < 5; j++)
                 {
-                    if (directionIsMoving[0])
+                    try
                     {
-                        r += (float)currentDirectionR * 0.2f;
+                        if (directionIsMoving[0])
+                        {
+                            r += (float)currentDirectionR * 0.2f;
+                        }
+                        else if (directionIsMoving[1])
+                        {
+                            g += (float)currentDirectionG * 0.2f;
+                        }
+                        else if (directionIsMoving[2])
+                        {
+                            b += (float)currentDirectionB * 0.2f;
+                        }
+                        for (int i = 0; i < meshes.Length; i++)
+                        {
+                            meshes[i].material.color = new Color(r, g, b);
+                        }
                     }
-                    else if (directionIsMoving[1])
-                    {
-                        g += (float)currentDirectionG * 0.2f;
-                    }
-                    else if (directionIsMoving[2])
-                    {
-                        b += (float)currentDirectionB * 0.2f;
-                    }
-                    for (int i = 0; i < meshes.Length; i++)
-                    {
-                        meshes[i].material.color = new Color(r, g, b);
-                    }
+                    catch { yield break; }
                     yield return new WaitForSeconds(0.1f);
                     if (stopWinAnimation) { break; }
                 }
