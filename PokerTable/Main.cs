@@ -11,9 +11,9 @@ using Il2CppRUMBLE.Poses;
 using Il2CppTMPro;
 using MelonLoader;
 using RumbleModdingAPI.RMAPI;
-using RumbleModUI;
 using System.Collections;
 using System.Security.Cryptography;
+using UIFramework;
 using UnityEngine;
 
 namespace GamblingMod
@@ -21,7 +21,7 @@ namespace GamblingMod
     public static class BuildInfo
     {
         public const string ModName = "GamblingMod";
-        public const string ModVersion = "2.2.4";
+        public const string ModVersion = "2.3.1";
         public const string Author = "UlvakSkillz";
     }
 
@@ -47,27 +47,14 @@ namespace GamblingMod
         private static int playerCoins = -1;
         public static int posesCompleted = -1;
         private static bool flatLandFound = false, voidLandFound = false;
-        public static Mod GamblingMod = new Mod();
-        public static ModSetting<int> deckCount;
-        public static ModSetting<bool> tableEnabled;
-        public static ModSetting<bool> slotsEnabled;
-        public static ModSetting<int> tableSeed;
-        public static ModSetting<int> slotsSeed;
-        public static ModSetting<bool> useSeed;
-        public static ModSetting<int> volume;
-        public static ModSetting<bool> showHandCount;
-        public static ModSetting<bool> debugging;
         public static List<Table> tableList = new List<Table>();
         public static List<SlotMachine> slotsList = new List<SlotMachine>();
         public GameObject rumbleTextObject;
         public static string currentScene = "Loader";
         private static GameObject storedTable, storedSlots;
         private bool finishedGymSetup;
-        private bool lastUseSeed = false;
-        private int lastdeckCount = 1;
-        private int lastVolume = -1;
         private Material spinnerMaterial;
-        private static Shader URPUnlit;
+        private static Shader URPLit;
 
         public static void Log(string msg, bool sendMsg = true)
         {
@@ -80,23 +67,32 @@ namespace GamblingMod
         }
 
         public static void Error(string msg) { logger.Error(msg); }
-        
+
+        public override void OnInitializeMelon()
+        {
+            Preferences.InitPrefs();
+            UI.RegisterMelon(this, Preferences.GamblingModCategory).OnModSaved += Save;
+        }
+
         public override void OnLateInitializeMelon()
         {
-            URPUnlit = Shader.Find("Universal Render Pipeline/Unlit");
-            ModUIInit();
+            URPLit = Shader.Find("Universal Render Pipeline/Lit");
             logger = LoggerInstance;
             melonMod = this;
-            Log("OnLateInitializeMelon Started", (bool)debugging.SavedValue);
+            Lighting.UseBounceLighting(true);
+            Lighting.SetHorizonLightColor(new Color(0.5f, 0.5f, 0.55f));
+            Lighting.SetGroundLightColor(new Color(0.35f, 0.35f, 0.42f));
+            Log("OnLateInitializeMelon Started", Preferences.debugging.Value);
             LoadSaveFile();
             LoadAssetBundle();
             MelonCoroutines.Start(GrabRumbleTextObject());
-            Log("OnLateInitializeMelon Completed", (bool)debugging.SavedValue);
+            Log("OnLateInitializeMelon Completed", Preferences.debugging.Value);
+            Actions.onMapInitialized += MapLoaded;
         }
 
         private void LoadSaveFile()
         {
-            Log("LoadSaveFile Started", (bool)debugging.SavedValue);
+            Log("LoadSaveFile Started", Preferences.debugging.Value);
             if (!Directory.Exists(@"UserData\" + BuildInfo.ModName))
             {
                 Directory.CreateDirectory(@"UserData\" + BuildInfo.ModName);
@@ -108,7 +104,7 @@ namespace GamblingMod
             try
             {
                 string decodedText = DecryptStringFromFile(@"UserData\" + BuildInfo.ModName + @"\Save.save", "UlvakSkillz");
-                Log("Save.save File Text: " + decodedText, (bool)debugging.SavedValue);
+                Log("Save.save File Text: " + decodedText, Preferences.debugging.Value);
                 string[] fileText = decodedText.Split("|");
                 playerCoins = int.Parse(fileText[0]);
                 Log("Loaded Player Coins: " + playerCoins, true);
@@ -122,12 +118,12 @@ namespace GamblingMod
                 if (playerCoins == -1) { Log("Failed to Load Player Coins, Setting to 0", true); playerCoins = 0; }
                 if (posesCompleted == -1) { Log("Failed to Load Poses Completed Count, Setting to 0", true); posesCompleted = 0; }
             }
-            Log("LoadSaveFile Completed", (bool)debugging.SavedValue);
+            Log("LoadSaveFile Completed", Preferences.debugging.Value);
         }
 
         private void LoadAssetBundle()
         {
-            Log("LoadAssetBundle Started", (bool)debugging.SavedValue);
+            Log("LoadAssetBundle Started", Preferences.debugging.Value);
             GameObject materialGO = GameObject.Instantiate(AssetBundles.LoadAssetFromStream<GameObject>(this, BuildInfo.ModName + ".gambling", "Spinner"));
             spinnerMaterial = (materialGO.GetComponent<MeshRenderer>().material);
             GameObject.DontDestroyOnLoad(materialGO);
@@ -146,19 +142,19 @@ namespace GamblingMod
             GameObject.DontDestroyOnLoad(storedSlots);
             finishedGymSetup = false;
             GameObject.Destroy(bundle);
-            Log("LoadAssetBundle Completed", (bool)debugging.SavedValue);
+            Log("LoadAssetBundle Completed", Preferences.debugging.Value);
         }
 
         private static void ChangeShaderLitToUnlit(GameObject asset)
         {
-            Renderer parentRendderer = asset.GetComponent<Renderer>();
+            UnityEngine.Renderer parentRendderer = asset.GetComponent<Renderer>();
             if (parentRendderer != null)
             {
                 for (int i = 0; i < parentRendderer.materials.Length; i++)
                 {
                     if (parentRendderer.materials[i].shader.name == "Universal Render Pipeline/Lit")
                     {
-                        parentRendderer.materials[i].shader = URPUnlit;
+                        parentRendderer.materials[i].shader = URPLit;
                     }
                 }
             }
@@ -168,64 +164,17 @@ namespace GamblingMod
             }
         }
 
-        public void ModUIInit()
-        {
-            GamblingMod.ModName = BuildInfo.ModName;
-            GamblingMod.ModVersion = BuildInfo.ModVersion;
-            GamblingMod.SetFolder(BuildInfo.ModName);
-            tableEnabled = GamblingMod.AddToList("Table Enabled", true, 0, "Enables the Poker Table.", new Tags());
-            slotsEnabled = GamblingMod.AddToList("Slots Enabled", true, 0, "Enables the Slot Machine.", new Tags());
-            deckCount = GamblingMod.AddToList("Deck Count", 1, "Sets How Many Complete Decks should be in the Dealer Deck.", new Tags());
-            showHandCount = GamblingMod.AddToList("Show Hand Count", false, 0, "BlackJack: If Enabled, Shows the Hand Counts.", new Tags { });
-            tableSeed = GamblingMod.AddToList("Table Seed", -1, "Sets the Seed in the Randomizer if 'Use Seed' is Toggled On.", new Tags { DoNotSave = true });
-            slotsSeed = GamblingMod.AddToList("Slots Seed", -1, "Sets the Seed in the Randomizer if 'Use Seed' is Toggled On.", new Tags { DoNotSave = true });
-            useSeed = GamblingMod.AddToList("Use Seed", false, 0, "If Enabled, Sets the Table to FreePlay Mode and Uses the Seed.", new Tags { DoNotSave = true });
-            volume = GamblingMod.AddToList("Volume", 100, "Sets the Volume of Sounds. 0 - 100", new Tags { DoNotSave = true });
-            debugging = GamblingMod.AddToList("Debugging", false, 0, "Enables Debugging Logs.", new Tags());
-            GamblingMod.GetFromFile();
-            lastUseSeed = (bool)useSeed.SavedValue;
-            UI.instance.UI_Initialized += UIInit;
-            GamblingMod.ModSaved += Save;
-            Actions.onMapInitialized += MapLoaded;
-        }
-
         private void Save()
         {
-            if (lastdeckCount != (int)deckCount.SavedValue)
+            if (Preferences.IsPrefChanged(Preferences.volume))
             {
-                int decks = Math.Max((int)deckCount.SavedValue, 0);
-                deckCount.SavedValue = decks;
-                deckCount.Value = decks;
+                SetAudioLevels(Preferences.volume.Value);
             }
-            int clampedValue = Math.Clamp((int)tableSeed.SavedValue, 0, 999999999);
-            if (clampedValue != (int)tableSeed.SavedValue)
+            if (Preferences.IsPrefChanged(Preferences.useSeed))
             {
-                tableSeed.SavedValue = clampedValue;
-                tableSeed.Value = clampedValue;
-            }
-            clampedValue = Math.Clamp((int)slotsSeed.SavedValue, 0, 999999999);
-            if (clampedValue != (int)slotsSeed.SavedValue)
-            {
-                slotsSeed.SavedValue = clampedValue;
-                slotsSeed.Value = clampedValue;
-            }
-            if (lastVolume != (int)volume.SavedValue)
-            {
-                clampedValue = Math.Clamp((int)volume.SavedValue, 0, 100);
-                if (clampedValue != (int)volume.SavedValue)
-                {
-                    volume.SavedValue = clampedValue;
-                    volume.Value = clampedValue;
-                }
-                lastVolume = (int)volume.SavedValue;
-                SetAudioLevels((int)volume.SavedValue);
-            }
-            if (lastUseSeed != (bool)useSeed.SavedValue)
-            {
-                lastUseSeed = (bool)useSeed.SavedValue;
                 foreach (Table table in tableList)
                 {
-                    if (lastUseSeed)
+                    if (Preferences.useSeed.Value)
                     {
                         if (table.freePlayButton != null) { GameObject.Destroy(table.freePlayButton); }
                         table.freePlay = true;
@@ -238,30 +187,24 @@ namespace GamblingMod
                 }
                 foreach (SlotMachine slots in slotsList)
                 {
-                    if (lastUseSeed)
+                    if (Preferences.useSeed.Value)
                     {
                         slots.SetFreePlay(true);
                     }
                     slots.SetupRandom();
                 }
             }
+            Preferences.StoreLastSavedPrefs();
         }
 
         private void SetAudioLevels(int volumeLevel)
         {
-            Log($"SetAudioLevels({volumeLevel}) Running", (bool)debugging.SavedValue);
+            Log($"SetAudioLevels({volumeLevel}) Running", Preferences.debugging.Value);
             foreach (AudioCall audioCall in storedAudioCalls)
             {
                 audioCall.generalSettings.SetVolume(volumeLevel / 100);
                 audioCall.spatialSettings.SpatialBlend = 1f;
             }
-        }
-
-        private void UIInit()
-        {
-            Log("UIInit Started", (bool)debugging.SavedValue);
-            UI.instance.AddMod(GamblingMod);
-            Log("UIInit Completed", (bool)debugging.SavedValue);
         }
 
         private void MapLoaded(string map)
@@ -276,13 +219,9 @@ namespace GamblingMod
             MelonCoroutines.Start(MapLoadCoroutine());
         }
 
-        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
-        {
-        }
-
         private IEnumerator MapLoadCoroutine()
         {
-            Log("MapLoadCoroutine Started", (bool)debugging.SavedValue);
+            Log("MapLoadCoroutine Started", Preferences.debugging.Value);
             if ((currentScene == "Gym") && (!finishedGymSetup))
             {
                 yield return new WaitForFixedUpdate();
@@ -320,22 +259,22 @@ namespace GamblingMod
                         }));
                 }
             }
-            if ((bool)tableEnabled.SavedValue)
+            if (Preferences.tableEnabled.Value)
             {
                 LoadTable();
             }
-            if ((bool)slotsEnabled.SavedValue)
+            if (Preferences.slotsEnabled.Value)
             {
                 LoadSlots();
             }
-            Log("MapLoadCoroutine Completed", (bool)debugging.SavedValue);
+            Log("MapLoadCoroutine Completed", Preferences.debugging.Value);
             yield break;
         }
 
         public static List<AudioCall> storedAudioCalls = new List<AudioCall>();
         private void SetupAudio()
         {
-            Log("SetupAudio Started", (bool)debugging.SavedValue);
+            Log("SetupAudio Started", Preferences.debugging.Value);
             storedAudioCalls.Clear();
             Transform playerController = PlayerManager.instance.localPlayer.Controller.transform;
             Transform visuals = playerController.GetChild(1);
@@ -356,8 +295,8 @@ namespace GamblingMod
             storedAudioCalls[5].hideFlags = HideFlags.HideAndDontSave;
             storedAudioCalls.Add(AudioCall.Instantiate(playerController.GetComponent<PlayerShiftstoneSystem>().onShiftstoneUseSFX)); //shiftstone use (4 internal) //////// x3 in a row stones
             storedAudioCalls[6].hideFlags = HideFlags.HideAndDontSave;
-            SetAudioLevels((int)volume.SavedValue);
-            Log("SetupAudio Completed", (bool)debugging.SavedValue);
+            SetAudioLevels(Preferences.volume.Value);
+            Log("SetupAudio Completed", Preferences.debugging.Value);
         }
 
         private IEnumerator ControlOtherLandsTransition()
@@ -373,13 +312,13 @@ namespace GamblingMod
                 loadedSlot.gameObject.SetActive(true);
                 loadedSlot.transform.position = new Vector3(loadedSlot.transform.position.x, 0, loadedSlot.transform.position.z);
             }
-            Log("ControlOtherLandsTransition Completed", (bool)debugging.SavedValue);
+            Log("ControlOtherLandsTransition Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator GrabRumbleTextObject()
         {
-            Log("GrabRumbleTextObject Started", (bool)debugging.SavedValue);
+            Log("GrabRumbleTextObject Started", Preferences.debugging.Value);
             GameObject originalObject = null;
             while (originalObject == null)
             {
@@ -420,13 +359,13 @@ namespace GamblingMod
             rumbleTextObject.transform.localScale = new Vector3(0.0001f, 0.001f, 0.001f);
             rumbleTextObject.SetActive(false);
             GameObject.DontDestroyOnLoad(rumbleTextObject);
-            Log("Grabbed RUMBLE GameObject for Later", (bool)debugging.SavedValue);
+            Log("Grabbed RUMBLE GameObject for Later", Preferences.debugging.Value);
             yield break;
         }
 
         private void FinishStoredSlotsSetup()
         {
-            Log("FinishStoredSlotsSetup Started", (bool)debugging.SavedValue);
+            Log("FinishStoredSlotsSetup Started", Preferences.debugging.Value);
             //setup stored Slots Wheels
             //duplicate Revolving Numbers Collection
             GameObject radialDials = GameObject.Instantiate(GameObjects.Gym.INTERACTABLES.RegionSelector.Model.Pin.Ping.RevolvingNumberCollection.GetGameObject());
@@ -468,12 +407,12 @@ namespace GamblingMod
 
             ChangeShaderLitToUnlit(storedSlots);
 
-            Log("FinishStoredSlotsSetup Completed", (bool)debugging.SavedValue);
+            Log("FinishStoredSlotsSetup Completed", Preferences.debugging.Value);
         }
 
         private void FinishStoredTableSetup()
         {
-            Log("FinishStoredTableSetup Started", (bool)debugging.SavedValue);
+            Log("FinishStoredTableSetup Started", Preferences.debugging.Value);
 
             ChangeShaderLitToUnlit(storedTable);
             storedTable.transform.GetChild(0).GetChild(0).GetComponent<Renderer>().material.color = new Color(0.0969f, 0.9072f, 0.4112f);
@@ -495,7 +434,7 @@ namespace GamblingMod
             storedTable.transform.GetChild(0).GetChild(13).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
             storedTable.transform.GetChild(0).GetChild(14).GetComponent<Renderer>().material.color = new Color(0.2785f, 0.4784f, 0.4823f);
 
-            Log("FinishStoredTableSetup Completed", (bool)debugging.SavedValue);
+            Log("FinishStoredTableSetup Completed", Preferences.debugging.Value);
         }
 
         public GameObject SpawnText(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale)
@@ -515,7 +454,7 @@ namespace GamblingMod
 
         private void SetupStoredSlotsSpinner(Transform spinner)
         {
-            Log("SetupStoredSlotsSpinner Started", (bool)debugging.SavedValue);
+            Log("SetupStoredSlotsSpinner Started", Preferences.debugging.Value);
             Vector3[] scales = {
                 new Vector3(0.0001f, 0.001f, -0.001f),
                 new Vector3(0.25f, 0f, 0.25f),
@@ -588,12 +527,12 @@ namespace GamblingMod
                 }
                 else if (i == 0) { slotObject.SetActive(true); } //this is needed for the RUMBLE text
             }
-            Log("SetupStoredSlotsSpinner Completed", (bool)debugging.SavedValue);
+            Log("SetupStoredSlotsSpinner Completed", Preferences.debugging.Value);
         }
 
         private void LoadTable()
         {
-            Log("LoadTable Started", (bool)debugging.SavedValue);
+            Log("LoadTable Started", Preferences.debugging.Value);
             switch (currentScene)
             {
                 case "Gym":
@@ -637,12 +576,12 @@ namespace GamblingMod
                 default:
                     return;
             }
-            Log("LoadTable Completed", (bool)debugging.SavedValue);
+            Log("LoadTable Completed", Preferences.debugging.Value);
         }
 
         private void LoadSlots()
         {
-            Log("LoadSlots Started", (bool)debugging.SavedValue);
+            Log("LoadSlots Started", Preferences.debugging.Value);
             slotsList.Clear();
             if ((currentScene != "Gym") && (currentScene != "Park")) { return; }
             GameObject slots = GameObject.Instantiate(storedSlots);
@@ -686,7 +625,7 @@ namespace GamblingMod
                     slotsList.Add(slots.AddComponent<SlotMachine>());
                     break;
             }
-            Log("LoadSlots Completed", (bool)debugging.SavedValue);
+            Log("LoadSlots Completed", Preferences.debugging.Value);
         }
 
         public static int GetPlayerCoinCount() { return playerCoins; }

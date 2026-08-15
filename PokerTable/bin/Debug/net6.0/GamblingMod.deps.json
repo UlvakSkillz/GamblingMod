@@ -17,9 +17,10 @@
           "Il2CppPhotonUnityNetworking": "0.0.0.0",
           "Il2CppRUMBLE.Plugins": "0.0.0.0",
           "Il2CppRUMBLE.Runtime": "0.0.0.0",
-          "MelonLoader": "0.7.2.2341",
-          "ModUI": "2.1.1.0",
+          "MelonLoader": "0.7.3.0",
+          "ModUI": "2.3.1.0",
           "RumbleModdingAPI": "1.0.0.0",
+          "UIFramework": "1.0.0.0",
           "Unity.TextMeshPro": "0.0.0.0",
           "UnityEngine.AnimationModule": "0.0.0.0",
           "UnityEngine.AudioModule": "0.0.0.0",
@@ -104,25 +105,33 @@
           }
         }
       },
-      "MelonLoader/0.7.2.2341": {
+      "MelonLoader/0.7.3.0": {
         "runtime": {
           "MelonLoader.dll": {
-            "assemblyVersion": "0.7.2.2341",
-            "fileVersion": "0.7.2.2341"
+            "assemblyVersion": "0.7.3.0",
+            "fileVersion": "0.7.3.0"
           }
         }
       },
-      "ModUI/2.1.1.0": {
+      "ModUI/2.3.1.0": {
         "runtime": {
           "ModUI.dll": {
-            "assemblyVersion": "2.1.1.0",
-            "fileVersion": "2.1.1.0"
+            "assemblyVersion": "2.3.1.0",
+            "fileVersion": "2.3.1.0"
           }
         }
       },
       "RumbleModdingAPI/1.0.0.0": {
         "runtime": {
           "RumbleModdingAPI.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "UIFramework/1.0.0.0": {
+        "runtime": {
+          "UIFramework.dll": {
             "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
@@ -192,6 +201,14 @@
           }
         }
       },
+      "Il2CppLIV.LCK/0.0.0.0": {
+        "runtime": {
+          "Il2CppLIV.LCK.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "Il2CppInterop.Common/1.5.1.0": {
         "runtime": {
           "Il2CppInterop.Common.dll": {
@@ -200,18 +217,10 @@
           }
         }
       },
-      "Microsoft.Extensions.Logging.Abstractions/6.0.0.0": {
-        "runtime": {
-          "Microsoft.Extensions.Logging.Abstractions.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.322.12309"
-          }
-        }
-      },
-      "Il2CppPhoton3Unity3D/4.1.8.4": {
+      "Il2CppPhoton3Unity3D/4.1.8.17": {
         "runtime": {
           "Il2CppPhoton3Unity3D.dll": {
-            "assemblyVersion": "4.1.8.4",
+            "assemblyVersion": "4.1.8.17",
             "fileVersion": "0.0.0.0"
           }
         }
@@ -296,6 +305,14 @@
           }
         }
       },
+      "Unity.Profiling.Core/0.0.0.0": {
+        "runtime": {
+          "Unity.Profiling.Core.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "Il2CppPlayFab/0.0.0.0": {
         "runtime": {
           "Il2CppPlayFab.dll": {
@@ -304,17 +321,25 @@
           }
         }
       },
-      "UnityEngine.XRModule/0.0.0.0": {
+      "Unity.XR.OpenXR/0.0.0.0": {
         "runtime": {
-          "UnityEngine.XRModule.dll": {
+          "Unity.XR.OpenXR.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "Il2CppRUMBLE.Platform/0.0.0.0": {
+      "Il2CppDiscord.Sdk/0.0.0.0": {
         "runtime": {
-          "Il2CppRUMBLE.Platform.dll": {
+          "Il2CppDiscord.Sdk.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Il2CppPhotonChat/0.0.0.0": {
+        "runtime": {
+          "Il2CppPhotonChat.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -336,9 +361,9 @@
           }
         }
       },
-      "Il2CppLIV.LCK/0.0.0.0": {
+      "UnityEngine.XRModule/0.0.0.0": {
         "runtime": {
-          "Il2CppLIV.LCK.dll": {
+          "UnityEngine.XRModule.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -352,14 +377,6 @@
           }
         }
       },
-      "Unity.RenderPipelines.Universal.Runtime/0.0.0.0": {
-        "runtime": {
-          "Unity.RenderPipelines.Universal.Runtime.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
       "Il2CppPhotonVoice.API/0.0.0.0": {
         "runtime": {
           "Il2CppPhotonVoice.API.dll": {
@@ -368,25 +385,9 @@
           }
         }
       },
-      "Unity.InputSystem/1.14.2.0": {
+      "Unity.RenderPipelines.Universal.Runtime/0.0.0.0": {
         "runtime": {
-          "Unity.InputSystem.dll": {
-            "assemblyVersion": "1.14.2.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Il2CppLIV/0.0.0.0": {
-        "runtime": {
-          "Il2CppLIV.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Unity.RenderPipelines.Core.Runtime/0.0.0.0": {
-        "runtime": {
-          "Unity.RenderPipelines.Core.Runtime.dll": {
+          "Unity.RenderPipelines.Universal.Runtime.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -400,10 +401,10 @@
           }
         }
       },
-      "Il2CppPhotonChat/0.0.0.0": {
+      "Unity.InputSystem/1.16.0.0": {
         "runtime": {
-          "Il2CppPhotonChat.dll": {
-            "assemblyVersion": "0.0.0.0",
+          "Unity.InputSystem.dll": {
+            "assemblyVersion": "1.16.0.0",
             "fileVersion": "0.0.0.0"
           }
         }
@@ -416,9 +417,9 @@
           }
         }
       },
-      "Unity.XR.OpenXR/0.0.0.0": {
+      "Il2CppRUMBLE.Platform/0.0.0.0": {
         "runtime": {
-          "Unity.XR.OpenXR.dll": {
+          "Il2CppRUMBLE.Platform.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -464,11 +465,11 @@
           }
         }
       },
-      "Tomlet/6.1.0.0": {
+      "Tomlet/6.2.0.0": {
         "runtime": {
           "Tomlet.dll": {
-            "assemblyVersion": "6.1.0.0",
-            "fileVersion": "6.1.0.0"
+            "assemblyVersion": "6.2.0.0",
+            "fileVersion": "6.2.0.0"
           }
         }
       },
@@ -509,6 +510,14 @@
           "Il2CppInterop.Generator.dll": {
             "assemblyVersion": "1.5.1.0",
             "fileVersion": "1.5.1.0"
+          }
+        }
+      },
+      "Iced/1.21.0.0": {
+        "runtime": {
+          "Iced.dll": {
+            "assemblyVersion": "1.21.0.0",
+            "fileVersion": "1.21.0.0"
           }
         }
       },
@@ -568,17 +577,17 @@
           }
         }
       },
-      "UnityEngine.AssetBundleModule/0.0.0.0": {
+      "UnityEngine.UIModule/0.0.0.0": {
         "runtime": {
-          "UnityEngine.AssetBundleModule.dll": {
+          "UnityEngine.UIModule.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
         }
       },
-      "UnityEngine.UIModule/0.0.0.0": {
+      "Unity.Collections/0.0.0.0": {
         "runtime": {
-          "UnityEngine.UIModule.dll": {
+          "Unity.Collections.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -595,6 +604,30 @@
       "UnityEngine.TextRenderingModule/0.0.0.0": {
         "runtime": {
           "UnityEngine.TextRenderingModule.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Il2CppLIV.NativeAudioBridge/0.0.0.0": {
+        "runtime": {
+          "Il2CppLIV.NativeAudioBridge.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Il2CppLIV.LCKCore/0.0.0.0": {
+        "runtime": {
+          "Il2CppLIV.LCKCore.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Il2CppNativeGallery/0.0.0.0": {
+        "runtime": {
+          "Il2CppNativeGallery.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -648,6 +681,38 @@
           }
         }
       },
+      "Unity.XR.CompositionLayers/0.0.0.0": {
+        "runtime": {
+          "Unity.XR.CompositionLayers.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "UnityEngine.UnityAnalyticsCommonModule/0.0.0.0": {
+        "runtime": {
+          "UnityEngine.UnityAnalyticsCommonModule.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "UnityEngine.VideoModule/0.0.0.0": {
+        "runtime": {
+          "UnityEngine.VideoModule.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
+      "Unity.XR.Management/0.0.0.0": {
+        "runtime": {
+          "Unity.XR.Management.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
+          }
+        }
+      },
       "UnityEngine.SubsystemsModule/0.0.0.0": {
         "runtime": {
           "UnityEngine.SubsystemsModule.dll": {
@@ -656,42 +721,10 @@
           }
         }
       },
-      "Il2CppRUMBLE.Platform.Info/0.0.0.0": {
+      "Unity.RenderPipelines.Core.Runtime/0.0.0.0": {
         "runtime": {
-          "Il2CppRUMBLE.Platform.Info.dll": {
+          "Unity.RenderPipelines.Core.Runtime.dll": {
             "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Il2CppLIV.NativeAudioBridge/0.0.0.0": {
-        "runtime": {
-          "Il2CppLIV.NativeAudioBridge.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Il2CppSystem.Net.Http/4.0.0.0": {
-        "runtime": {
-          "Il2CppSystem.Net.Http.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Il2CppNativeGallery/0.0.0.0": {
-        "runtime": {
-          "Il2CppNativeGallery.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Il2CppNewtonsoft.Json/13.0.0.0": {
-        "runtime": {
-          "Il2CppNewtonsoft.Json.dll": {
-            "assemblyVersion": "13.0.0.0",
             "fileVersion": "0.0.0.0"
           }
         }
@@ -728,25 +761,9 @@
           }
         }
       },
-      "Unity.Collections/0.0.0.0": {
+      "Il2CppRUMBLE.Platform.Info/0.0.0.0": {
         "runtime": {
-          "Unity.Collections.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "UnityEngine.UnityAnalyticsCommonModule/0.0.0.0": {
-        "runtime": {
-          "UnityEngine.UnityAnalyticsCommonModule.dll": {
-            "assemblyVersion": "0.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Unity.XR.Management/0.0.0.0": {
-        "runtime": {
-          "Unity.XR.Management.dll": {
+          "Il2CppRUMBLE.Platform.Info.dll": {
             "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
@@ -776,11 +793,11 @@
           }
         }
       },
-      "Microsoft.Diagnostics.NETCore.Client/0.2.8.10101": {
+      "Il2CppLIV.LCKCore.ThirdParty.MessagePack/0.0.0.0": {
         "runtime": {
-          "Microsoft.Diagnostics.NETCore.Client.dll": {
-            "assemblyVersion": "0.2.8.10101",
-            "fileVersion": "0.2.8.10101"
+          "Il2CppLIV.LCKCore.ThirdParty.MessagePack.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
           }
         }
       },
@@ -816,26 +833,10 @@
           }
         }
       },
-      "Il2CppSystem.Runtime.Serialization/4.0.0.0": {
+      "Unity.XR.CoreUtils/0.0.0.0": {
         "runtime": {
-          "Il2CppSystem.Runtime.Serialization.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Il2CppSystem.Data/4.0.0.0": {
-        "runtime": {
-          "Il2CppSystem.Data.dll": {
-            "assemblyVersion": "4.0.0.0",
-            "fileVersion": "0.0.0.0"
-          }
-        }
-      },
-      "Il2CppSystem.Xml.Linq/4.0.0.0": {
-        "runtime": {
-          "Il2CppSystem.Xml.Linq.dll": {
-            "assemblyVersion": "4.0.0.0",
+          "Unity.XR.CoreUtils.dll": {
+            "assemblyVersion": "0.0.0.0",
             "fileVersion": "0.0.0.0"
           }
         }
@@ -917,17 +918,22 @@
       "serviceable": false,
       "sha512": ""
     },
-    "MelonLoader/0.7.2.2341": {
+    "MelonLoader/0.7.3.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "ModUI/2.1.1.0": {
+    "ModUI/2.3.1.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
     "RumbleModdingAPI/1.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UIFramework/1.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -972,17 +978,17 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Il2CppLIV.LCK/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Il2CppInterop.Common/1.5.1.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Extensions.Logging.Abstractions/6.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppPhoton3Unity3D/4.1.8.4": {
+    "Il2CppPhoton3Unity3D/4.1.8.17": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1037,17 +1043,27 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Unity.Profiling.Core/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
     "Il2CppPlayFab/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "UnityEngine.XRModule/0.0.0.0": {
+    "Unity.XR.OpenXR/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Il2CppRUMBLE.Platform/0.0.0.0": {
+    "Il2CppDiscord.Sdk/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Il2CppPhotonChat/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1062,7 +1078,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Il2CppLIV.LCK/0.0.0.0": {
+    "UnityEngine.XRModule/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1072,27 +1088,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Unity.RenderPipelines.Universal.Runtime/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
     "Il2CppPhotonVoice.API/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Unity.InputSystem/1.14.2.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppLIV/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Unity.RenderPipelines.Core.Runtime/0.0.0.0": {
+    "Unity.RenderPipelines.Universal.Runtime/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1102,7 +1103,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Il2CppPhotonChat/0.0.0.0": {
+    "Unity.InputSystem/1.16.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1112,7 +1113,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Unity.XR.OpenXR/0.0.0.0": {
+    "Il2CppRUMBLE.Platform/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1142,7 +1143,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Tomlet/6.1.0.0": {
+    "Tomlet/6.2.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1168,6 +1169,11 @@
       "sha512": ""
     },
     "Il2CppInterop.Generator/1.5.1.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Iced/1.21.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1207,12 +1213,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "UnityEngine.AssetBundleModule/0.0.0.0": {
+    "UnityEngine.UIModule/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "UnityEngine.UIModule/0.0.0.0": {
+    "Unity.Collections/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1223,6 +1229,21 @@
       "sha512": ""
     },
     "UnityEngine.TextRenderingModule/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Il2CppLIV.NativeAudioBridge/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Il2CppLIV.LCKCore/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Il2CppNativeGallery/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1257,32 +1278,32 @@
       "serviceable": false,
       "sha512": ""
     },
+    "Unity.XR.CompositionLayers/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UnityEngine.UnityAnalyticsCommonModule/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "UnityEngine.VideoModule/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Unity.XR.Management/0.0.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
     "UnityEngine.SubsystemsModule/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
-    "Il2CppRUMBLE.Platform.Info/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppLIV.NativeAudioBridge/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppSystem.Net.Http/4.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppNativeGallery/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppNewtonsoft.Json/13.0.0.0": {
+    "Unity.RenderPipelines.Core.Runtime/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1307,17 +1328,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Unity.Collections/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "UnityEngine.UnityAnalyticsCommonModule/0.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Unity.XR.Management/0.0.0.0": {
+    "Il2CppRUMBLE.Platform.Info/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1337,7 +1348,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.Diagnostics.NETCore.Client/0.2.8.10101": {
+    "Il2CppLIV.LCKCore.ThirdParty.MessagePack/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""
@@ -1362,17 +1373,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Il2CppSystem.Runtime.Serialization/4.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppSystem.Data/4.0.0.0": {
-      "type": "reference",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "Il2CppSystem.Xml.Linq/4.0.0.0": {
+    "Unity.XR.CoreUtils/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

@@ -72,7 +72,7 @@ namespace GamblingMod
 
         void Start()
         {
-            Log("Start Started", (bool)Main.debugging.SavedValue);
+            Log("Start Started", Preferences.debugging.Value);
             instance = this;
             activeObjects = instance.transform.GetChild(1).gameObject;
             rotatingWheels = instance.transform.GetChild(2).gameObject;
@@ -101,12 +101,12 @@ namespace GamblingMod
             soundsParent = instance.transform.GetChild(0).GetChild(6).gameObject;
             SetupRandom();
             SetupStart();
-            Log("Start Completed", (bool)Main.debugging.SavedValue);
+            Log("Start Completed", Preferences.debugging.Value);
         }
 
         void OnDestroy()
         {
-            Log("OnDestroy Started", (bool)Main.debugging.SavedValue);
+            Log("OnDestroy Started", Preferences.debugging.Value);
             if (spinCoroutines[2] != null) { MelonCoroutines.Stop(spinCoroutines[2]); }
             if (spinCoroutines[1] != null) { MelonCoroutines.Stop(spinCoroutines[1]); }
             if (spinCoroutines[0] != null) { MelonCoroutines.Stop(spinCoroutines[0]); }
@@ -116,12 +116,12 @@ namespace GamblingMod
                 Destroy(gemRotateActive[0]);
                 gemRotateActive.RemoveAt(0);
             }
-            Log("OnDestroy Completed", (bool)Main.debugging.SavedValue);
+            Log("OnDestroy Completed", Preferences.debugging.Value);
         }
 
         private void FixWheels()
         {
-            Log("FixWheels Called", (bool)Main.debugging.SavedValue);
+            Log("FixWheels Called", Preferences.debugging.Value);
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 10; j++)
@@ -133,9 +133,9 @@ namespace GamblingMod
 
         public void SetupRandom()
         {
-            Log("SetupRandom Started", (bool)Main.debugging.SavedValue);
+            Log("SetupRandom Started", Preferences.debugging.Value);
             string seedString = "0123456789";
-            if (!(bool)Main.useSeed.SavedValue)
+            if (!Preferences.useSeed.Value)
             {
                 Random randomSeed = new Random();
                 int randomInt = randomSeed.Next(1, 10);
@@ -148,26 +148,25 @@ namespace GamblingMod
             }
             else
             {
-                seed = Math.Min((int)Main.tableSeed.SavedValue, 0);
+                seed = Preferences.tableSeed.Value;
             }
-            Main.slotsSeed.Value = seed;
-            Main.slotsSeed.SavedValue = seed;
+            Preferences.slotsSeed.Value = seed;
             random = new Random(seed);
-            Log("SetupRandom Complete", (bool)Main.debugging.SavedValue);
+            Log("SetupRandom Complete", Preferences.debugging.Value);
         }
 
         public void SetupStart()
         {
-            Log("SetupStart Started", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Started", Preferences.debugging.Value);
             SetupLever();
             SetupButtons();
             SetupSlotMachineSideWall();
-            Log("SetupStart Complete", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Complete", Preferences.debugging.Value);
         }
 
         private void SetupSlotMachineSideWall()
         {
-            Log("SetupSlotMachineSideWall Started", (bool)Main.debugging.SavedValue);
+            Log("SetupSlotMachineSideWall Started", Preferences.debugging.Value);
             GameObject sideMenu = NewGameObject("SideMenu", instance.transform.GetChild(0), new Vector3(18.5282f, 56.9347f, -17.3875f), Quaternion.Euler(0f, 180f, 0), new Vector3(500, 500, 500));
 
             //line 1: x3 same
@@ -216,7 +215,7 @@ namespace GamblingMod
             GameObject line4Texts = NewGameObject("Texts", line4Parent.transform, new Vector3(-0.021f, 0f, -0.047f), Quaternion.Euler(0, 0, 0), new Vector3(0.2f, 0.2f, 0.2f));
             SpawnText(line4Texts.transform, "1", new Vector3(0, 0, 0), Quaternion.Euler(0, 90, 0), new Vector3(0.5f, 0.5f, 0.5f));
 
-            Log("SetupSlotMachineSideWall - Starting Rotating Gems", (bool)Main.debugging.SavedValue);
+            Log("SetupSlotMachineSideWall - Starting Rotating Gems", Preferences.debugging.Value);
             SlotObjectAlternator gemRotate = new SlotObjectAlternator(line1Gems1);
             gemRotateActive.Add(gemRotate);
             gemRotate = new SlotObjectAlternator(line1Gems2);
@@ -240,7 +239,7 @@ namespace GamblingMod
             gemRotateActive.Add(gemRotate);
             gemRotate = new SlotObjectAlternator(line4Gems2);
             gemRotateActive.Add(gemRotate);
-            Log("SetupSlotMachineSideWall Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupSlotMachineSideWall Completed", Preferences.debugging.Value);
         }
         
         private GameObject NewGameObject(string name, Transform parent, Vector3 localPosition, Quaternion localRotation, Vector3 localScale, GameObject objectToInstatiate = null)
@@ -292,7 +291,7 @@ namespace GamblingMod
 
         private void SetupButtons()
         {
-            Log("SetupButtons Started", (bool)Main.debugging.SavedValue);
+            Log("SetupButtons Started", Preferences.debugging.Value);
             GameObject bet1Button = LoadMenuButton("1 Row",
                 /*position*/ new Vector3(0.31f, 0.87f, 0.3f),
                 /*rotation*/Quaternion.Euler(15, 0, 0),
@@ -326,7 +325,7 @@ namespace GamblingMod
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f),
                 false,
                 () => {
-                    if ((!spinning) && (!(bool)Main.useSeed.SavedValue))
+                    if ((!spinning) && (!Preferences.useSeed.Value))
                     {
                         SetFreePlay(!freePlay);
                         this.photonView.RPC("RPC_FreePlayPressed", RpcTarget.Others, new Il2CppSystem.Object[] { freePlay });
@@ -353,9 +352,9 @@ namespace GamblingMod
             SetFreePlay(freePlay);
             betAmount = 1;
             UpdateBetLines();
-            activeObjects.transform.GetChild(0).GetChild(2).GetComponent<TextMeshPro>().color = Color.green;
-            activeObjects.transform.GetChild(1).GetChild(2).GetComponent<TextMeshPro>().color = Color.black;
-            activeObjects.transform.GetChild(2).GetChild(2).GetComponent<TextMeshPro>().color = Color.black;
+            activeObjects.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().color = Color.green;
+            activeObjects.transform.GetChild(1).GetChild(1).GetComponent<TextMeshPro>().color = Color.black;
+            activeObjects.transform.GetChild(2).GetChild(1).GetComponent<TextMeshPro>().color = Color.black;
             TextMeshPro titleTMP = slotMachineTitleText.GetComponent<TextMeshPro>();
             TextMeshPro coinsInTMP = coinsIn.GetComponent<TextMeshPro>();
             TextMeshPro coinsOutTMP = coinsOut.GetComponent<TextMeshPro>();
@@ -368,7 +367,7 @@ namespace GamblingMod
             titleTMP.enableWordWrapping = false;
             coinsInTMP.enableWordWrapping = false;
             coinsOutTMP.enableWordWrapping = false;
-            Log("SetupButtons Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupButtons Completed", Preferences.debugging.Value);
         }
 
         [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
@@ -411,7 +410,7 @@ namespace GamblingMod
 
         private void UpdateBetLines()
         {
-            Log("UpdateBetLines Called", (bool)Main.debugging.SavedValue);
+            Log("UpdateBetLines Called", Preferences.debugging.Value);
             betLines[1].SetActive(betAmount >= 3);
             betLines[2].SetActive(betAmount >= 3);
             betLines[3].SetActive(betAmount == 5);
@@ -420,24 +419,24 @@ namespace GamblingMod
 
         private void SetupLever()
         {
-            Log("SetupLever Started", (bool)Main.debugging.SavedValue);
+            Log("SetupLever Started", Preferences.debugging.Value);
             lever = instance.transform.GetChild(0).GetChild(0).GetChild(2).gameObject.AddComponent<InteractionLever>();
             lever.LeverPulled += PulledLever;
             lever.OnLeverReleased += ToggleLeverRelease;
             lever.OnLeverReleasedComplete += ToggleLeverReleaseComplete;
-            Log("SetupLever Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupLever Completed", Preferences.debugging.Value);
         }
 
         PooledAudioSource playingAudio;
         private void ToggleLeverRelease()
         {
-            Log("ToggleLeverRelease Called", (bool)Main.debugging.SavedValue);
+            Log("ToggleLeverRelease Called", Preferences.debugging.Value);
             MelonCoroutines.Start(PlayWheelSpinSoundTillStopped());
         }
 
         private void ToggleLeverReleaseComplete()
         {
-            Log("ToggleLeverReleaseComplete Called", (bool)Main.debugging.SavedValue);
+            Log("ToggleLeverReleaseComplete Called", Preferences.debugging.Value);
             continueWheelSpinSound = false;
             if (!playingAudio.IsInPool)
             {
@@ -447,27 +446,27 @@ namespace GamblingMod
 
         private IEnumerator PlayWheelSpinSoundTillStopped()
         {
-            Log("PlayWheelSpinSoundTillStopped Started", (bool)Main.debugging.SavedValue);
+            Log("PlayWheelSpinSoundTillStopped Started", Preferences.debugging.Value);
             continueWheelSpinSound = true;
             while (continueWheelSpinSound)
             {
                 playingAudio = AudioManager.instance.Play(Main.storedAudioCalls[0], soundsParent.transform.GetChild(0).position);
                 yield return new WaitForSeconds(playingAudio.audioSource.clip.length);
             }
-            Log("PlayWheelSpinSoundTillStopped Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayWheelSpinSoundTillStopped Completed", Preferences.debugging.Value);
             yield break;
         }
 
         public void SetFreePlay(bool isFreePlay)
         {
-            Log($"SetFreePlay({isFreePlay}) Called", (bool)Main.debugging.SavedValue);
+            Log($"SetFreePlay({isFreePlay}) Called", Preferences.debugging.Value);
             freePlay = isFreePlay;
-            freePlayButton.transform.GetChild(2).GetComponent<TextMeshPro>().color = freePlay ? Color.green : Color.red;
+            freePlayButton.transform.GetChild(1).GetComponent<TextMeshPro>().color = freePlay ? Color.green : Color.red;
         }
 
         public void PulledLever()
         {
-            Log("Pulled Lever Called", (bool)Main.debugging.SavedValue);
+            Log("Pulled Lever Called", Preferences.debugging.Value);
             if (!IsSpinning() && (freePlay || PlayerHasEnoughCoins()))
             {
                 try { if (lever.lastInteractedPlayer.Controller.controllerType != ControllerType.Local) { return; } } catch { return; }
@@ -485,7 +484,7 @@ namespace GamblingMod
 
         private void PlayCoinInsertSound()
         {
-            Log("PlayCoinInsertSound Started", (bool)Main.debugging.SavedValue);
+            Log("PlayCoinInsertSound Started", Preferences.debugging.Value);
             AudioManager.instance.Play(Main.storedAudioCalls[1], soundsParent.transform.GetChild(1).position);
         }
 
@@ -497,13 +496,13 @@ namespace GamblingMod
         [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
         public void RPC_BetButtonPressed(short button)
         {
-            Log($"RPC_BetButtonPressed({button}) Called", (bool)Main.debugging.SavedValue);
+            Log($"RPC_BetButtonPressed({button}) Called", Preferences.debugging.Value);
             BetButtonPressed(button);
         }
 
         private IEnumerator PlaySpin()
         {
-            Log("Spinning Wheels", (bool)Main.debugging.SavedValue);
+            Log("Spinning Wheels", Preferences.debugging.Value);
             spinning = true;
             yield return MelonCoroutines.Start(RandomizeSlots());
             MelonCoroutines.Start(StartWheelSpinSound());
@@ -518,13 +517,13 @@ namespace GamblingMod
                 spinCoroutines[i] = MelonCoroutines.Start(SpinNumber(rotatingWheels.transform.GetChild(i).GetComponent<RevolvingNumber>(), i, extraSpins));
             }
             yield return spinCoroutines[0];
-            Log("Wheel 1 Done: " + SlotsSpotTypesString[slotsOrder[0][wheelsNumber[0]]], (bool)Main.debugging.SavedValue);
+            Log("Wheel 1 Done: " + SlotsSpotTypesString[slotsOrder[0][wheelsNumber[0]]], Preferences.debugging.Value);
             this.photonView.RPC("RPC_RotateToNumber", RpcTarget.Others, new Il2CppSystem.Object[] { 0, wheelsNumber[0] });
             yield return spinCoroutines[1];
-            Log("Wheel 2 Done: " + SlotsSpotTypesString[slotsOrder[1][wheelsNumber[1]]], (bool)Main.debugging.SavedValue);
+            Log("Wheel 2 Done: " + SlotsSpotTypesString[slotsOrder[1][wheelsNumber[1]]], Preferences.debugging.Value);
             this.photonView.RPC("RPC_RotateToNumber", RpcTarget.Others, new Il2CppSystem.Object[] { 1, wheelsNumber[1] });
             yield return spinCoroutines[2];
-            Log("Wheel 3 Done: " + SlotsSpotTypesString[slotsOrder[2][wheelsNumber[2]]], (bool)Main.debugging.SavedValue);
+            Log("Wheel 3 Done: " + SlotsSpotTypesString[slotsOrder[2][wheelsNumber[2]]], Preferences.debugging.Value);
             this.photonView.RPC("RPC_RotateToNumber", RpcTarget.Others, new Il2CppSystem.Object[] { 2, wheelsNumber[2] });
             yield return MelonCoroutines.Start(CheckWinPhase());
             yield break;
@@ -544,7 +543,7 @@ namespace GamblingMod
 
         private IEnumerator CheckWinPhase(bool isPlaying = true)
         {
-            Log("CheckWinPhase Started", (bool)Main.debugging.SavedValue);
+            Log("CheckWinPhase Started", Preferences.debugging.Value);
             playingWheelSpinSound = false;
             //create wheel face in Numbers
             int[][] wheelNumberLineup = new int[3][];
@@ -564,11 +563,11 @@ namespace GamblingMod
             wheelNumberLineup[2] = line2;
             for (int i = 0; i < 3; i++)
             {
-                Log($"Slot {i}: {SlotsSpotTypesString[slotsOrder[i][0]]} {SlotsSpotTypesString[slotsOrder[i][1]]} {SlotsSpotTypesString[slotsOrder[i][2]]} {SlotsSpotTypesString[slotsOrder[i][3]]} {SlotsSpotTypesString[slotsOrder[i][4]]} {SlotsSpotTypesString[slotsOrder[i][5]]} {SlotsSpotTypesString[slotsOrder[i][6]]} {SlotsSpotTypesString[slotsOrder[i][7]]} {SlotsSpotTypesString[slotsOrder[i][8]]} {SlotsSpotTypesString[slotsOrder[i][9]]}", (bool)Main.debugging.SavedValue);
+                Log($"Slot {i}: {SlotsSpotTypesString[slotsOrder[i][0]]} {SlotsSpotTypesString[slotsOrder[i][1]]} {SlotsSpotTypesString[slotsOrder[i][2]]} {SlotsSpotTypesString[slotsOrder[i][3]]} {SlotsSpotTypesString[slotsOrder[i][4]]} {SlotsSpotTypesString[slotsOrder[i][5]]} {SlotsSpotTypesString[slotsOrder[i][6]]} {SlotsSpotTypesString[slotsOrder[i][7]]} {SlotsSpotTypesString[slotsOrder[i][8]]} {SlotsSpotTypesString[slotsOrder[i][9]]}", Preferences.debugging.Value);
             }
-            Log($"Wheel : {SlotsSpotTypesString[wheelNumberLineup[2][0]]} {SlotsSpotTypesString[wheelNumberLineup[2][1]]} {SlotsSpotTypesString[wheelNumberLineup[2][2]]}", (bool)Main.debugging.SavedValue);
-            Log($"Wheel : {SlotsSpotTypesString[wheelNumberLineup[1][0]]} {SlotsSpotTypesString[wheelNumberLineup[1][1]]} {SlotsSpotTypesString[wheelNumberLineup[1][2]]}", (bool)Main.debugging.SavedValue);
-            Log($"Wheel : {SlotsSpotTypesString[wheelNumberLineup[0][0]]} {SlotsSpotTypesString[wheelNumberLineup[0][1]]} {SlotsSpotTypesString[wheelNumberLineup[0][2]]}", (bool)Main.debugging.SavedValue);
+            Log($"Wheel : {SlotsSpotTypesString[wheelNumberLineup[2][0]]} {SlotsSpotTypesString[wheelNumberLineup[2][1]]} {SlotsSpotTypesString[wheelNumberLineup[2][2]]}", Preferences.debugging.Value);
+            Log($"Wheel : {SlotsSpotTypesString[wheelNumberLineup[1][0]]} {SlotsSpotTypesString[wheelNumberLineup[1][1]]} {SlotsSpotTypesString[wheelNumberLineup[1][2]]}", Preferences.debugging.Value);
+            Log($"Wheel : {SlotsSpotTypesString[wheelNumberLineup[0][0]]} {SlotsSpotTypesString[wheelNumberLineup[0][1]]} {SlotsSpotTypesString[wheelNumberLineup[0][2]]}", Preferences.debugging.Value);
             TextMeshPro titleTextMP = slotMachineTitleText.GetComponent<TextMeshPro>();
             titleTextMP.text = "Payout: ";
             List<object> showTopWinCoroutines = new List<object>();
@@ -576,7 +575,7 @@ namespace GamblingMod
             bool hasWon = false;
             stopWinAnimation = false;
             //bet1
-            Log("Checking Middle Line", (bool)Main.debugging.SavedValue);
+            Log("Checking Middle Line", Preferences.debugging.Value);
             int amount = CheckWinLine(wheelNumberLineup[1]);
             if (amount != 0)
             {
@@ -588,12 +587,12 @@ namespace GamblingMod
                 PlayPayoutSound();
                 yield return new WaitForSeconds(1.75f);
             }
-            Log("Payout: " + amount, (bool)Main.debugging.SavedValue);
+            Log("Payout: " + amount, Preferences.debugging.Value);
             payout += amount;
             //bet3
             if (betAmount >= 3)
             {
-                Log("Checking Bottom Line", (bool)Main.debugging.SavedValue);
+                Log("Checking Bottom Line", Preferences.debugging.Value);
                 amount = CheckWinLine(wheelNumberLineup[0]);
                 if (amount != 0)
                 {
@@ -605,9 +604,9 @@ namespace GamblingMod
                     PlayPayoutSound();
                     yield return new WaitForSeconds(1.75f);
                 }
-                Log("Payout: " + amount, (bool)Main.debugging.SavedValue);
+                Log("Payout: " + amount, Preferences.debugging.Value);
                 payout += amount;
-                Log("Checking Top Line", (bool)Main.debugging.SavedValue);
+                Log("Checking Top Line", Preferences.debugging.Value);
                 amount = CheckWinLine(wheelNumberLineup[2]);
                 if (amount != 0)
                 {
@@ -619,7 +618,7 @@ namespace GamblingMod
                     PlayPayoutSound();
                     yield return new WaitForSeconds(1.75f);
                 }
-                Log("Payout: " + amount, (bool)Main.debugging.SavedValue);
+                Log("Payout: " + amount, Preferences.debugging.Value);
                 payout += amount;
             }
             //bet5
@@ -627,7 +626,7 @@ namespace GamblingMod
             {
                 int[] crossline = { wheelNumberLineup[0][0], wheelNumberLineup[1][1], wheelNumberLineup[2][2] };
                 int[] crossline2 = { wheelNumberLineup[0][2], wheelNumberLineup[1][1], wheelNumberLineup[2][0] };
-                Log("Checking Top Left to Bottom Right Line", (bool)Main.debugging.SavedValue);
+                Log("Checking Top Left to Bottom Right Line", Preferences.debugging.Value);
                 amount = CheckWinLine(crossline2);
                 if (amount != 0)
                 {
@@ -639,9 +638,9 @@ namespace GamblingMod
                     PlayPayoutSound();
                     yield return new WaitForSeconds(1.75f);
                 }
-                Log("Payout: " + amount, (bool)Main.debugging.SavedValue);
+                Log("Payout: " + amount, Preferences.debugging.Value);
                 payout += amount;
-                Log("Checking Bottom Left to Top Right Line", (bool)Main.debugging.SavedValue);
+                Log("Checking Bottom Left to Top Right Line", Preferences.debugging.Value);
                 amount = CheckWinLine(crossline);
                 if (amount != 0)
                 {
@@ -653,7 +652,7 @@ namespace GamblingMod
                     PlayPayoutSound();
                     yield return new WaitForSeconds(1.75f);
                 }
-                Log("Payout: " + amount, (bool)Main.debugging.SavedValue);
+                Log("Payout: " + amount, Preferences.debugging.Value);
                 payout += amount;
             }
             if (payout == 0)
@@ -666,7 +665,7 @@ namespace GamblingMod
             string numbersPart = titleTextMP.text.Substring(8, titleTextMP.text.Length - 8);
             if (numbersPart.Contains("+"))
             {
-                Log("Animating Payout Text", (bool)Main.debugging.SavedValue);
+                Log("Animating Payout Text", Preferences.debugging.Value);
                 while (numbersPart.Length > 0)
                 {
                     numbersPart = numbersPart.Remove(random.Next(0, numbersPart.Length), 1);
@@ -701,19 +700,19 @@ namespace GamblingMod
             }
             foreach(object coroutine in showTopWinCoroutines) { yield return coroutine; }
             spinning = false;
-            Log("CheckWinPhase Completed", (bool)Main.debugging.SavedValue);
+            Log("CheckWinPhase Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private void PlayNoPayoutSound()
         {
-            Log("PlayNoPayoutSound Called", (bool)Main.debugging.SavedValue);
+            Log("PlayNoPayoutSound Called", Preferences.debugging.Value);
             AudioManager.instance.Play(Main.storedAudioCalls[5], soundsParent.transform.GetChild(3).position);
         }
 
         private IEnumerator AnimateTopLight(int payout)
         {
-            Log("AnimateTopLight Started", (bool)Main.debugging.SavedValue);
+            Log("AnimateTopLight Started", Preferences.debugging.Value);
             AudioSource sound = soundsParent.transform.GetChild(4).gameObject.GetComponent<AudioSource>();
             topLight.transform.localPosition = new Vector3(4.15874f, 74.5f, -6.97464f);
             topLight.transform.localRotation = Quaternion.Euler(-90f, 0f, 0f);
@@ -747,19 +746,19 @@ namespace GamblingMod
                 yield return new WaitForFixedUpdate();
             }
             topLight.SetActive(false);
-            Log("AnimateTopLight Completed", (bool)Main.debugging.SavedValue);
+            Log("AnimateTopLight Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private void PlayPayoutSound()
         {
-            Log("PlayPayoutSound Called", (bool)Main.debugging.SavedValue);
+            Log("PlayPayoutSound Called", Preferences.debugging.Value);
             AudioManager.instance.Play(Main.storedAudioCalls[3], soundsParent.transform.GetChild(3).position);
         }
 
         private IEnumerator PlayBigPayoutSound(int payout)
         {
-            Log($"PlayBigPayoutSound({payout}) Called", (bool)Main.debugging.SavedValue);
+            Log($"PlayBigPayoutSound({payout}) Called", Preferences.debugging.Value);
             PooledAudioSource pooledAudio;
             for (int i = 0; i < ((int)(payout / 100)); i++)
             {
@@ -771,7 +770,7 @@ namespace GamblingMod
 
         private IEnumerator DisplayWinOnTop(int[] line)
         {
-            Log($"DisplayWinOnTop({line[0]} {line[1]} {line[2]}) Started", (bool)Main.debugging.SavedValue);
+            Log($"DisplayWinOnTop({line[0]} {line[1]} {line[2]}) Started", Preferences.debugging.Value);
             GameObject[] slotObjects = new GameObject[line.Length];
             GameObject[] slotObjectsParents = new GameObject[line.Length];
             float[] positions = { 0.33f, 0.12f, -0.14f };
@@ -845,7 +844,7 @@ namespace GamblingMod
                 yield return new WaitForFixedUpdate();
             }
             foreach (GameObject slotObject in slotObjectsParents) { GameObject.Destroy(slotObject); }
-            Log($"DisplayWinOnTop({line.ToString()}) Completed", (bool)Main.debugging.SavedValue);
+            Log($"DisplayWinOnTop({line.ToString()}) Completed", Preferences.debugging.Value);
             yield break;
         }
 
@@ -911,7 +910,7 @@ namespace GamblingMod
 
         private int CheckWinLine(int[] line)
         {
-            Log($"CheckWinLine: {line[0]} {line[1]} {line[2]}", (bool)Main.debugging.SavedValue);
+            Log($"CheckWinLine: {line[0]} {line[1]} {line[2]}", Preferences.debugging.Value);
             int payout = 0;
             int howards = 0;
             //count howards
@@ -955,7 +954,7 @@ namespace GamblingMod
 
         private IEnumerator PlayShiftStoneSound()
         {
-            Log("PlayShiftStoneSound Called", (bool)Main.debugging.SavedValue);
+            Log("PlayShiftStoneSound Called", Preferences.debugging.Value);
             PooledAudioSource pooledAudio;
             pooledAudio = AudioManager.instance.Play(Main.storedAudioCalls[6], soundsParent.transform.GetChild(3).position);
             yield return new WaitForSeconds(0.25f);
@@ -981,13 +980,13 @@ namespace GamblingMod
         [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
         public void RPC_RotateToNumber(short wheel, short num)
         {
-            Log("RPC_RotateToNumber Called", (bool)Main.debugging.SavedValue);
+            Log("RPC_RotateToNumber Called", Preferences.debugging.Value);
             MelonCoroutines.Start(WaitForWheelSpinsToFinishThenSetFinalSpot(wheel, num));
         }
 
         private IEnumerator WaitForWheelSpinsToFinishThenSetFinalSpot(int wheel, int num)
         {
-            Log($"WaitForWheelSpinsToFinishThenSetFinalSpot({wheel} {num}) Started", (bool)Main.debugging.SavedValue);
+            Log($"WaitForWheelSpinsToFinishThenSetFinalSpot({wheel} {num}) Started", Preferences.debugging.Value);
             if (clientSpinningCoroutines[wheel] != null)
             {
                 clientSpinning[wheel] = false;
@@ -999,7 +998,7 @@ namespace GamblingMod
             wheelsNumber[wheel] = num;
             yield return revolvingNumber.rotateCoroutine;
             MelonCoroutines.Start(CheckWinPhase(false));
-            Log($"WaitForWheelSpinsToFinishThenSetFinalSpot({wheel} {num}) Completed", (bool)Main.debugging.SavedValue);
+            Log($"WaitForWheelSpinsToFinishThenSetFinalSpot({wheel} {num}) Completed", Preferences.debugging.Value);
             yield break;
         }
 
@@ -1007,7 +1006,7 @@ namespace GamblingMod
 
         private IEnumerator RandomizeSlots()
         {
-            Log("RandomizeSlots Started", (bool)Main.debugging.SavedValue);
+            Log("RandomizeSlots Started", Preferences.debugging.Value);
             for (int i = 0; i < 3; i++)
             {
                 slotsOrder[i] = new int[10];
@@ -1023,7 +1022,7 @@ namespace GamblingMod
                     temp = slotsOrder[i][j];
                     slotsOrder[i][j] = slotsOrder[i][randomSpot];
                     slotsOrder[i][randomSpot] = temp;
-                    Log($"Slot {i}: Spots Flipped: {j} <-> {randomSpot}", (bool)Main.debugging.SavedValue);
+                    Log($"Slot {i}: Spots Flipped: {j} <-> {randomSpot}", Preferences.debugging.Value);
                 }
             }
             this.photonView.RPC("RPC_RandomizeSlots", RpcTarget.Others, new Il2CppSystem.Object[] { freePlay, betAmount, slotsOrder[0][0], slotsOrder[0][1], slotsOrder[0][2], slotsOrder[0][3], slotsOrder[0][4], slotsOrder[0][5], slotsOrder[0][6], slotsOrder[0][7], slotsOrder[0][8], slotsOrder[0][9], slotsOrder[1][0], slotsOrder[1][1], slotsOrder[1][2], slotsOrder[1][3], slotsOrder[1][4], slotsOrder[1][5], slotsOrder[1][6], slotsOrder[1][7], slotsOrder[1][8], slotsOrder[1][9], slotsOrder[2][0], slotsOrder[2][1], slotsOrder[2][2], slotsOrder[2][3], slotsOrder[2][4], slotsOrder[2][5], slotsOrder[2][6], slotsOrder[2][7], slotsOrder[2][8], slotsOrder[2][9]});
@@ -1049,7 +1048,7 @@ namespace GamblingMod
                 {
                     rotatingWheels.transform.GetChild(i).GetChild(0).GetChild(slotsOrder[i][j]).localRotation = Quaternion.Euler(0, 0, 270f - (j * 36));
                 }
-                Log($"Finished Slot {i}: {SlotsSpotTypesString[slotsOrder[i][0]]} {SlotsSpotTypesString[slotsOrder[i][1]]} {SlotsSpotTypesString[slotsOrder[i][2]]} {SlotsSpotTypesString[slotsOrder[i][3]]} {SlotsSpotTypesString[slotsOrder[i][4]]} {SlotsSpotTypesString[slotsOrder[i][5]]} {SlotsSpotTypesString[slotsOrder[i][6]]} {SlotsSpotTypesString[slotsOrder[i][7]]} {SlotsSpotTypesString[slotsOrder[i][8]]} {SlotsSpotTypesString[slotsOrder[i][9]]}", (bool)Main.debugging.SavedValue);
+                Log($"Finished Slot {i}: {SlotsSpotTypesString[slotsOrder[i][0]]} {SlotsSpotTypesString[slotsOrder[i][1]]} {SlotsSpotTypesString[slotsOrder[i][2]]} {SlotsSpotTypesString[slotsOrder[i][3]]} {SlotsSpotTypesString[slotsOrder[i][4]]} {SlotsSpotTypesString[slotsOrder[i][5]]} {SlotsSpotTypesString[slotsOrder[i][6]]} {SlotsSpotTypesString[slotsOrder[i][7]]} {SlotsSpotTypesString[slotsOrder[i][8]]} {SlotsSpotTypesString[slotsOrder[i][9]]}", Preferences.debugging.Value);
             }
             currentRotation = screen.localRotation.eulerAngles.z;
             for (int i = 0; i < 75; i++)
@@ -1064,14 +1063,14 @@ namespace GamblingMod
             }
             rotatingWheels.transform.localPosition = new Vector3(-0.543f, 1.115f, 0.017f);
             screen.transform.localRotation = Quaternion.Euler(0, 90, 270);
-            Log("RandomizeSlots Completed", (bool)Main.debugging.SavedValue);
+            Log("RandomizeSlots Completed", Preferences.debugging.Value);
             yield break;
         }
 
         [RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC]
         public void RPC_RandomizeSlots(bool isFreePlay, short thisBetAmount, short num0, short num1, short num2, short num3, short num4, short num5, short num6, short num7, short num8, short num9, short num10, short num11, short num12, short num13, short num14, short num15, short num16, short num17, short num18, short num19, short num20, short num21, short num22, short num23, short num24, short num25, short num26, short num27, short num28, short num29)
         {
-            Log("RPC_RandomizeSlots Called", (bool)Main.debugging.SavedValue);
+            Log("RPC_RandomizeSlots Called", Preferences.debugging.Value);
             SetFreePlay(isFreePlay);
             betAmount = thisBetAmount;
             UpdateBetLines();
@@ -1083,12 +1082,12 @@ namespace GamblingMod
 
         private IEnumerator RandomizeSlots(int[] newSlotsOrder)
         {
-            Log("RandomizeSlots(int[]) Started", (bool)Main.debugging.SavedValue);
+            Log("RandomizeSlots(int[]) Started", Preferences.debugging.Value);
             slotMachineTitleText.GetComponent<TextMeshPro>().text = "Randomizing";
             Transform screen = instance.transform.GetChild(0).GetChild(3);
             float movementPerTick = 0.04f / 75f;
             float currentRotation = screen.localRotation.eulerAngles.z;
-            Log("RandomizeSlots(int[]) - Rotating Cover and moving wheel backwards", (bool)Main.debugging.SavedValue);
+            Log("RandomizeSlots(int[]) - Rotating Cover and moving wheel backwards", Preferences.debugging.Value);
             for (int i = 0; i < 75; i++)
             {
                 rotatingWheels.transform.localPosition = new Vector3(-0.543f, 1.115f, rotatingWheels.transform.localPosition.z - movementPerTick);
@@ -1101,22 +1100,22 @@ namespace GamblingMod
             }
             rotatingWheels.transform.localPosition = new Vector3(-0.543f, 1.115f, -0.023f);
             screen.transform.localRotation = Quaternion.Euler(0, 90, 90);
-            Log("RandomizeSlots(int[]) - Setting Slots to Passed Data", (bool)Main.debugging.SavedValue);
+            Log("RandomizeSlots(int[]) - Setting Slots to Passed Data", Preferences.debugging.Value);
             for (int i = 0; i < 3; i++)
             {
                 slotsOrder[i] = new int[10];
                 for (int j = 0; j < 10; j++)
                 {
                     slotsOrder[i][j] = newSlotsOrder[(10 * i) + j];
-                    Log($"Slot {i}: {slotsOrder[i][j]}", (bool)Main.debugging.SavedValue);
+                    Log($"Slot {i}: {slotsOrder[i][j]}", Preferences.debugging.Value);
                 }
                 for (int j = 0; j < 10; j++)
                 {
                     rotatingWheels.transform.GetChild(i).GetChild(0).GetChild(slotsOrder[i][j]).localRotation = Quaternion.Euler(0, 0, 270f - (j * 36));
                 }
-                Log($"Finished Slot {i}: {SlotsSpotTypesString[slotsOrder[i][0]]} {SlotsSpotTypesString[slotsOrder[i][1]]} {SlotsSpotTypesString[slotsOrder[i][2]]} {SlotsSpotTypesString[slotsOrder[i][3]]} {SlotsSpotTypesString[slotsOrder[i][4]]} {SlotsSpotTypesString[slotsOrder[i][5]]} {SlotsSpotTypesString[slotsOrder[i][6]]} {SlotsSpotTypesString[slotsOrder[i][7]]} {SlotsSpotTypesString[slotsOrder[i][8]]} {SlotsSpotTypesString[slotsOrder[i][9]]}", (bool)Main.debugging.SavedValue);
+                Log($"Finished Slot {i}: {SlotsSpotTypesString[slotsOrder[i][0]]} {SlotsSpotTypesString[slotsOrder[i][1]]} {SlotsSpotTypesString[slotsOrder[i][2]]} {SlotsSpotTypesString[slotsOrder[i][3]]} {SlotsSpotTypesString[slotsOrder[i][4]]} {SlotsSpotTypesString[slotsOrder[i][5]]} {SlotsSpotTypesString[slotsOrder[i][6]]} {SlotsSpotTypesString[slotsOrder[i][7]]} {SlotsSpotTypesString[slotsOrder[i][8]]} {SlotsSpotTypesString[slotsOrder[i][9]]}", Preferences.debugging.Value);
             }
-            Log("RandomizeSlots(int[]) - Rotating Cover and moving wheel forwards", (bool)Main.debugging.SavedValue);
+            Log("RandomizeSlots(int[]) - Rotating Cover and moving wheel forwards", Preferences.debugging.Value);
             currentRotation = screen.localRotation.eulerAngles.z;
             for (int i = 0; i < 75; i++)
             {
@@ -1131,13 +1130,13 @@ namespace GamblingMod
             rotatingWheels.transform.localPosition = new Vector3(-0.543f, 1.115f, 0.017f);
             screen.transform.localRotation = Quaternion.Euler(0, 90, 270);
             SpinWheelsTillStopped();
-            Log("RandomizeSlots Completed", (bool)Main.debugging.SavedValue);
+            Log("RandomizeSlots Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private void SpinWheelsTillStopped()
         {
-            Log("SpinWheelsTillStopped Called", (bool)Main.debugging.SavedValue);
+            Log("SpinWheelsTillStopped Called", Preferences.debugging.Value);
             MelonCoroutines.Start(StartWheelSpinSound());
             slotMachineTitleText.GetComponent<TextMeshPro>().text = "Spinning Wheels";
             clientSpinningCoroutines[0] = MelonCoroutines.Start(SpinWheelTillStoppedCoroutine(0));
@@ -1163,7 +1162,7 @@ namespace GamblingMod
 
         public GameObject LoadMenuButton(string title, Vector3 position, Quaternion rotation, Vector3 localScale, bool onButtonTop, Action listener = null)
         {
-            Log("Loading Menu Button: " + title, (bool)Main.debugging.SavedValue);
+            Log("Loading Menu Button: " + title, Preferences.debugging.Value);
             GameObject button = (listener != null ? Create.NewButton(listener) : Create.NewButton());
             button.name = title + " Button";
             button.transform.SetParent(activeObjects.transform);
@@ -1171,13 +1170,13 @@ namespace GamblingMod
             button.transform.localRotation = rotation;
             button.transform.localScale = localScale;
             LoadText(button, title, onButtonTop);
-            Log("Done Loading Menu Button: " + title, (bool)Main.debugging.SavedValue);
+            Log("Done Loading Menu Button: " + title, Preferences.debugging.Value);
             return button;
         }
 
         public GameObject SpawnText(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale)
         {
-            Log("Loading Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Loading Text: " + title, Preferences.debugging.Value);
             GameObject text = Create.NewText();
             text.name = title + " Text";
             text.transform.SetParent(parent);
@@ -1188,13 +1187,13 @@ namespace GamblingMod
             textTMP.alignment = TextAlignmentOptions.Center;
             textTMP.enableWordWrapping = false;
             textTMP.text = title;
-            Log("Done Loading Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Done Loading Text: " + title, Preferences.debugging.Value);
             return text;
         }
 
         public void LoadText(GameObject button, string title, bool onButtonTop)
         {
-            Log("Loading Menu Button Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Loading Menu Button Text: " + title, Preferences.debugging.Value);
             GameObject text = Create.NewText();
             text.name = title + "Text";
             text.transform.SetParent(button.transform);
@@ -1205,7 +1204,7 @@ namespace GamblingMod
             textTMP.alignment = TextAlignmentOptions.Center;
             textTMP.enableWordWrapping = false;
             textTMP.text = title;
-            Log("Done Loading Menu Button Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Done Loading Menu Button Text: " + title, Preferences.debugging.Value);
         }
     }
 }

@@ -69,22 +69,22 @@ namespace GamblingMod
 
         public IEnumerator Run()
         {
-            Log("Run Running", (bool)Main.debugging.SavedValue);
+            Log("Run Running", Preferences.debugging.Value);
             SetupStart();
             gameLoopCoroutine = MelonCoroutines.Start(GameLoop());
             yield return gameLoopCoroutine;
-            Log("Run Completed", (bool)Main.debugging.SavedValue);
+            Log("Run Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private void SetupStart()
         {
-            Log("SetupStart Running", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Running", Preferences.debugging.Value);
             gameLoopRunning = false;
             RandomizeDeck();
             SetupBetMenu();
             SetupOptionsMenu();
-            Log("SetupStart Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Completed", Preferences.debugging.Value);
         }
 
         private void SetupCardSpots()
@@ -100,12 +100,12 @@ namespace GamblingMod
         private int coinsGained = 0;
         private IEnumerator GameLoop()
         {
-            Log("GameLoop Running", (bool)Main.debugging.SavedValue);
+            Log("GameLoop Running", Preferences.debugging.Value);
             gameLoopRunning = true;
             while (gameLoopRunning)
             {
                 //reshuffle if needed
-                if (deck.Count <= 26 * (int)Main.deckCount.SavedValue)
+                if (deck.Count <= 26 * Preferences.deckCount.Value)
                 {
                     RandomizeDeck(false);
                     yield return new WaitForSeconds(1f);
@@ -124,7 +124,7 @@ namespace GamblingMod
                     endGameTextTMP.alignment = TextAlignmentOptions.Center;
                     endGameTextTMP.enableWordWrapping = false;
                     continueShuffling = false;
-                    Log("Not Enough Coins, Exiting BlackJack", (bool)Main.debugging.SavedValue);
+                    Log("Not Enough Coins, Exiting BlackJack", Preferences.debugging.Value);
                     yield return new WaitForSeconds(1.5f);
                     gameLoopRunning = false;
                     break;
@@ -246,13 +246,13 @@ namespace GamblingMod
                 }
                 tableInstance.ClearActiveObjects();
             }
-            Log("GameLoop Completed", (bool)Main.debugging.SavedValue);
+            Log("GameLoop Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator PlayPlayerWin(List<GameObject> handCards, List<GameObject> dealerCards)
         {
-            Log("PlayPlayerWin Started", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerWin Started", Preferences.debugging.Value);
             List<object> cardsReacting = new List<object>();
             for (int i = 0; i < handCards.Count; i++)
             {
@@ -266,7 +266,7 @@ namespace GamblingMod
             {
                 yield return card;
             }
-            Log("PlayPlayerWin Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerWin Completed", Preferences.debugging.Value);
             yield break;
         }
 
@@ -295,7 +295,7 @@ namespace GamblingMod
 
         private IEnumerator PlayPlayerBust(List<GameObject> handCards)
         {
-            Log("PlayPlayerBust Started", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerBust Started", Preferences.debugging.Value);
             List<object> cardsReacting = new List<object>();
             for (int i = 0; i < handCards.Count; i++)
             {
@@ -305,13 +305,13 @@ namespace GamblingMod
             {
                 yield return card;
             }
-            Log("PlayPlayerBust Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerBust Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator PlayDealerBust(List<GameObject> handCards)
         {
-            Log("PlayDealerBust Started", (bool)Main.debugging.SavedValue);
+            Log("PlayDealerBust Started", Preferences.debugging.Value);
             List<object> cardsReacting = new List<object>();
             for (int i = 0; i < handCards.Count; i++)
             {
@@ -321,13 +321,13 @@ namespace GamblingMod
             {
                 yield return card;
             }
-            Log("PlayDealerBust Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayDealerBust Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator PlayCardBustCoroutine(GameObject card)
         {
-            Log("PlayCardBustCoroutine Started", (bool)Main.debugging.SavedValue);
+            Log("PlayCardBustCoroutine Started", Preferences.debugging.Value);
             Vector3 startingScale = card.transform.localScale;
             Vector3 scalePerTick = startingScale / 50f;
             for (int i = 0; i < 50; i++)
@@ -335,13 +335,13 @@ namespace GamblingMod
                 card.transform.localScale -= scalePerTick;
                 yield return new WaitForFixedUpdate();
             }
-            Log("PlayCardBustCoroutine Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayCardBustCoroutine Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator PlayDealerWin(List<GameObject> handCards, List<GameObject> dealerCards)
         {
-            Log("PlayDealerWin Started", (bool)Main.debugging.SavedValue);
+            Log("PlayDealerWin Started", Preferences.debugging.Value);
             List<object> cardsReacting = new List<object>();
             for (int i = 0; i < handCards.Count; i++)
             {
@@ -355,7 +355,7 @@ namespace GamblingMod
             {
                 yield return card;
             }
-            Log("PlayDealerWin Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayDealerWin Completed", Preferences.debugging.Value);
             yield break;
         }
 
@@ -389,7 +389,7 @@ namespace GamblingMod
 
         private IEnumerator RevealDealerCard()
         {
-            Log("RevealDealerCard Started", (bool)Main.debugging.SavedValue);
+            Log("RevealDealerCard Started", Preferences.debugging.Value);
             float rotationPerTick = 180f / 25f;
             Transform dealerCard = cardSpots.transform.GetChild(1).GetChild(1).GetChild(0);
             GameObject newCard = GameObject.Instantiate(tableInstance.storedDeckOfCards.transform.GetChild(dealerHand[1]).gameObject);
@@ -407,14 +407,14 @@ namespace GamblingMod
                 newCard.transform.localRotation = Quaternion.Euler(currentRotationX, currentRotationY, currentRotationZ);
                 yield return new WaitForFixedUpdate();
             }
-            Log("Completed Rotation", (bool)Main.debugging.SavedValue);
-            Log("RevealDealerCard Completed", (bool)Main.debugging.SavedValue);
+            Log("Completed Rotation", Preferences.debugging.Value);
+            Log("RevealDealerCard Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private List<int> GetPlayerHandTotal()
         {
-            Log("GetPlayerHandTotal Started", (bool)Main.debugging.SavedValue);
+            Log("GetPlayerHandTotal Started", Preferences.debugging.Value);
             List<int> hands = new List<int>();
             int total = 0;
             bool hasAce = false;
@@ -441,13 +441,13 @@ namespace GamblingMod
                 hands.Add(total);
                 total = 0;
             }
-            Log("GetPlayerHandTotal Completed", (bool)Main.debugging.SavedValue);
+            Log("GetPlayerHandTotal Completed", Preferences.debugging.Value);
             return hands;
         }
 
         private int GetDealerHandTotal()
         {
-            Log("GetDealerHandTotal Started", (bool)Main.debugging.SavedValue);
+            Log("GetDealerHandTotal Started", Preferences.debugging.Value);
             int total = 0;
             bool hasAce = false;
             foreach (int i in dealerHand)
@@ -468,13 +468,13 @@ namespace GamblingMod
             {
                 total += 10;
             }
-            Log("GetDealerHandTotal Completed", (bool)Main.debugging.SavedValue);
+            Log("GetDealerHandTotal Completed", Preferences.debugging.Value);
             return total;
         }
 
         private int GetCardsTotal(List<int> cards)
         {
-            Log("GetCardsTotal Started", (bool)Main.debugging.SavedValue);
+            Log("GetCardsTotal Started", Preferences.debugging.Value);
             int total = 0;
             bool hasAce = false;
             foreach (int i in cards)
@@ -490,20 +490,20 @@ namespace GamblingMod
                     hasAce = true;
                 }
                 total += card;
-                Log($"Card {tableInstance.CardString[i]}: {card}", (bool)Main.debugging.SavedValue);
+                Log($"Card {tableInstance.CardString[i]}: {card}", Preferences.debugging.Value);
             }
             if (hasAce && total <= 11)
             {
                 total += 10;
-                Log($"Ace able to be 11", (bool)Main.debugging.SavedValue);
+                Log($"Ace able to be 11", Preferences.debugging.Value);
             }
-            Log("GetCardsTotal Completed: " + total, (bool)Main.debugging.SavedValue);
+            Log("GetCardsTotal Completed: " + total, Preferences.debugging.Value);
             return total;
         }
 
         private IEnumerator PlayHands()
         {
-            Log("PlayHands Running", (bool)Main.debugging.SavedValue);
+            Log("PlayHands Running", Preferences.debugging.Value);
             hand = new List<List<int>>();
             dealerHand = new List<int>();
             has21Immediately = false;
@@ -511,22 +511,22 @@ namespace GamblingMod
             int thisHand = hand.Count;
             hand.Add(new List<int>());
             hand[hand.Count - 1].Add(DrawCard());
-            Log("Player Card 1: " + tableInstance.CardString[hand[hand.Count - 1][0]], (bool)Main.debugging.SavedValue);
+            Log("Player Card 1: " + tableInstance.CardString[hand[hand.Count - 1][0]], Preferences.debugging.Value);
             object playDrawAnimationCoroutine = PlayDrawCardAnimation(hand[hand.Count - 1][0], cardSpots.transform.GetChild(0).GetChild(0), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
             yield return playDrawAnimationCoroutine;
 
             dealerHand.Add(DrawCard());
-            Log("Dealer Card 1: " + tableInstance.CardString[dealerHand[0]], (bool)Main.debugging.SavedValue);
+            Log("Dealer Card 1: " + tableInstance.CardString[dealerHand[0]], Preferences.debugging.Value);
             object playDrawAnimationCoroutine2 = PlayDrawCardAnimation(dealerHand[0], cardSpots.transform.GetChild(1).GetChild(0), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
             yield return playDrawAnimationCoroutine2;
 
             hand[hand.Count - 1].Add(DrawCard());
-            Log("Player Card 2: " + tableInstance.CardString[hand[hand.Count - 1][1]], (bool)Main.debugging.SavedValue);
+            Log("Player Card 2: " + tableInstance.CardString[hand[hand.Count - 1][1]], Preferences.debugging.Value);
             object playDrawAnimationCoroutine3 = PlayDrawCardAnimation(hand[hand.Count - 1][1], cardSpots.transform.GetChild(0).GetChild(1), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
             yield return playDrawAnimationCoroutine3;
             
             dealerHand.Add(DrawCard());
-            Log("Dealer Card 2: -_-", (bool)Main.debugging.SavedValue);
+            Log("Dealer Card 2: -_-", Preferences.debugging.Value);
             object playDrawAnimationCoroutine4 = PlayDrawCardAnimation(52, cardSpots.transform.GetChild(1).GetChild(1), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0), false);
             yield return playDrawAnimationCoroutine4;
             //starting hands have been dealt
@@ -540,19 +540,19 @@ namespace GamblingMod
                 object optionsMenuCoroutine = MelonCoroutines.Start(RunOptionsMenu(thisHand));
                 yield return optionsMenuCoroutine;
             }
-            Log("PlayHands Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayHands Completed", Preferences.debugging.Value);
             yield break;
         }
 
         //Note: position, not localPosition. This sets the linear path to localPosition 0,0 in animation
         private object PlayDrawCardAnimation(int CardToDraw, Transform parent, Vector3 position, Quaternion localRotation, bool playRotate = true)
         {
-            Log("PlayDrawCardAnimation Started", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawCardAnimation Started", Preferences.debugging.Value);
             GameObject card = GameObject.Instantiate(tableInstance.storedDeckOfCards.transform.GetChild(CardToDraw).gameObject);
             card.transform.SetParent(parent);
             card.transform.position = position;
             card.transform.localRotation = localRotation;
-            Log("PlayDrawCardAnimation Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawCardAnimation Completed", Preferences.debugging.Value);
             return MelonCoroutines.Start(PlayDrawAnimation(card, 25, playRotate));
         }
 
@@ -568,7 +568,7 @@ namespace GamblingMod
         //moves it to localPosition 0. flips 180 unless specified (dealer card 2)
         private IEnumerator PlayDrawAnimation(GameObject card, int ticks = 25, bool playRotate = true)
         {
-            Log("PlayDrawAnimation Started", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawAnimation Started", Preferences.debugging.Value);
             Vector3 distancePerTick = (card.transform.localPosition) / ticks;
             float rotationPerTick = 180f / ((float)ticks);
             float currentRotationX = card.transform.localRotation.eulerAngles.x;
@@ -584,17 +584,17 @@ namespace GamblingMod
                 }
                 yield return new WaitForFixedUpdate();
             }
-            Log("PlayDrawAnimation Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawAnimation Completed", Preferences.debugging.Value);
             yield break;
         }
 
         //spawns bet menu and waits for an option to be pressed
         private IEnumerator RunBetMenu()
         {
-            Log("RunBetMenu Started", (bool)Main.debugging.SavedValue);
+            Log("RunBetMenu Started", Preferences.debugging.Value);
             betAmount = 1;
             GameObject betsMenu = SpawnBetsMenu();
-            Log("Spawned Bets Menu, Waiting for Accepted Bet", (bool)Main.debugging.SavedValue);
+            Log("Spawned Bets Menu, Waiting for Accepted Bet", Preferences.debugging.Value);
             while (!betAccepted && !userQuits)
             {
                 yield return new WaitForFixedUpdate();
@@ -602,15 +602,15 @@ namespace GamblingMod
             if (betAccepted)
             {
                 betHeldAmount = betAmount;
-                Log("Bet Accepted, Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                Log("Bet Accepted, Bet: " + betAmount, Preferences.debugging.Value);
             }
-            Log("RunBetMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("RunBetMenu Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private GameObject SpawnBetsMenu()
         {
-            Log("SpawnBetsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SpawnBetsMenu Started", Preferences.debugging.Value);
             GameObject spawnedBetsMenu = GameObject.Instantiate(storedBetsMenu);
             spawnedBetsMenu.transform.SetParent(activeGamePartsTransform);
             spawnedBetsMenu.transform.localPosition = new Vector3(0, tableInstance.TABLEHEIGHT - 0.052f, 0);
@@ -621,81 +621,81 @@ namespace GamblingMod
             UpdateBetAmountText();
             //Bet Down
             spawnedBetsMenu.transform.GetChild(2).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Down Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Down Pressed", Preferences.debugging.Value);
                 if (1 < betAmount)
                 {
                     betAmount--;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Up
             spawnedBetsMenu.transform.GetChild(3).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Up Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Up Pressed", Preferences.debugging.Value);
                 if (Main.GetPlayerCoinCount() >= betAmount + 1)
                 {
                     betAmount++;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Down 10
             spawnedBetsMenu.transform.GetChild(4).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Down Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Down Pressed", Preferences.debugging.Value);
                 if (10 < betAmount)
                 {
                     betAmount -= 10;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Up 10
             spawnedBetsMenu.transform.GetChild(5).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Up Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Up Pressed", Preferences.debugging.Value);
                 if (Main.GetPlayerCoinCount() >= betAmount + 10)
                 {
                     betAmount += 10;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Accepted
             spawnedBetsMenu.transform.GetChild(6).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Accepted: " + betAmount, (bool)Main.debugging.SavedValue);
+                Log("Bet Accepted: " + betAmount, Preferences.debugging.Value);
                 betAccepted = true;
                 continueShuffling = false;
             }));
             //Quit
             spawnedBetsMenu.transform.GetChild(7).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("User Quit During Betting", (bool)Main.debugging.SavedValue);
+                Log("User Quit During Betting", Preferences.debugging.Value);
                 userQuits = true;
                 continueShuffling = false;
             }));
             //Bet Min
             spawnedBetsMenu.transform.GetChild(8).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Min Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Min Pressed", Preferences.debugging.Value);
                 betAmount = 1;
-                Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                Log("New Bet: " + betAmount, Preferences.debugging.Value);
                 UpdateBetAmountText();
             }));
             //Bet Max
             spawnedBetsMenu.transform.GetChild(9).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Max Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Max Pressed", Preferences.debugging.Value);
                 betAmount = Main.GetPlayerCoinCount();
-                Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                Log("New Bet: " + betAmount, Preferences.debugging.Value);
                 UpdateBetAmountText();
             }));
-            spawnedBetsMenu.transform.GetChild(9).GetChild(2).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
+            spawnedBetsMenu.transform.GetChild(9).GetChild(1).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
 
             betAccepted = false;
             userQuits = false;
-            Log("SpawnBetsMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("SpawnBetsMenu Completed", Preferences.debugging.Value);
             return spawnedBetsMenu;
         }
 
         private void RandomizeDeck(bool continueShuffling = true)
         {
-            Log("RandomizeDeck Running", (bool)Main.debugging.SavedValue);
+            Log("RandomizeDeck Running", Preferences.debugging.Value);
             object[] shufflings = tableInstance.ShuffleDealerDeck();
             if (continueShuffling)
             {
@@ -704,13 +704,13 @@ namespace GamblingMod
             deck = new List<int>();
             List<int> tempDeck = new List<int>();
             int cardCount = 0;
-            for (int i = 0; i < 52 * (int)Main.deckCount.SavedValue; i++)
+            for (int i = 0; i < 52 * Preferences.deckCount.Value; i++)
             {
                 deck.Add(cardCount);
                 cardCount++;
                 if (cardCount == 52) { cardCount = 0; }
             }
-            Log("Deck Setup Done", (bool)Main.debugging.SavedValue);
+            Log("Deck Setup Done", Preferences.debugging.Value);
             tableInstance.dealerDeck.transform.localScale = new Vector3(1, ((float)deck.Count) / 52f, 1);
             tempDeck.Clear();
             while (deck.Count > 0)
@@ -720,7 +720,7 @@ namespace GamblingMod
                 deck.RemoveAt(spot);
             }
             deck.AddRange(tempDeck);
-            Log("RandomizeDeck Complete", (bool)Main.debugging.SavedValue);
+            Log("RandomizeDeck Complete", Preferences.debugging.Value);
         }
 
         private bool continueShuffling = true;
@@ -749,7 +749,7 @@ namespace GamblingMod
 
         private void SetupBetMenu()
         {
-            Log("SetupBetMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SetupBetMenu Started", Preferences.debugging.Value);
             if (storedBetsMenu != null) { GameObject.Destroy(storedBetsMenu); }
             storedBetsMenu = new GameObject("BetsMenu");
             storedBetsMenu.transform.SetParent(storedGamePartsTransform);
@@ -824,7 +824,7 @@ namespace GamblingMod
                 /*position*/ new Vector3(-0.5f, 0f, 0.8f),
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
-            Log("SetupBetMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupBetMenu Completed", Preferences.debugging.Value);
         }
 
         private bool pressedStay;
@@ -832,7 +832,7 @@ namespace GamblingMod
         private bool pressedSplit;
         private GameObject SpawnOptionsMenu(int thisHand)
         {
-            Log("SpawnOptionsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SpawnOptionsMenu Started", Preferences.debugging.Value);
             pressedStay = false;
             pressedHit = false;
             pressedSplit = false;
@@ -843,29 +843,29 @@ namespace GamblingMod
             spawnedOptionsMenu.transform.localScale = Vector3.one;
             //Stay
             spawnedOptionsMenu.transform.GetChild(0).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Stay Pressed", (bool)Main.debugging.SavedValue);
+                Log("Stay Pressed", Preferences.debugging.Value);
                 pressedStay = true;
             }));
             //Hit
             spawnedOptionsMenu.transform.GetChild(1).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Hit Pressed", (bool)Main.debugging.SavedValue);
+                Log("Hit Pressed", Preferences.debugging.Value);
                 pressedHit = true;
             }));
-            spawnedOptionsMenu.transform.GetChild(1).GetChild(2).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
+            spawnedOptionsMenu.transform.GetChild(1).GetChild(1).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
             //Split
             if (SplitIsPossible(hand[thisHand]))
             {
                 spawnedOptionsMenu.transform.GetChild(2).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                    Log("Split Pressed", (bool)Main.debugging.SavedValue);
+                    Log("Split Pressed", Preferences.debugging.Value);
                     pressedSplit = true;
                 }));
-                spawnedOptionsMenu.transform.GetChild(2).GetChild(2).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
+                spawnedOptionsMenu.transform.GetChild(2).GetChild(1).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
                 spawnedOptionsMenu.transform.GetChild(2).gameObject.SetActive(true);
             }
             //Hand Text
             spawnedOptionsMenu.transform.GetChild(3).GetComponent<TextMeshPro>().text = (GetPlayerHandTotal()[thisHand]).ToString();
             spawnedOptionsMenu.transform.GetChild(3).localPosition = new Vector3(-0.15f, 0f, 0.6f); //fixes weirdness about Text not being correct
-            spawnedOptionsMenu.transform.GetChild(3).gameObject.SetActive((bool)Main.showHandCount.SavedValue);
+            spawnedOptionsMenu.transform.GetChild(3).gameObject.SetActive(Preferences.showHandCount.Value);
 
             //Dealer Hand Text
             string total;
@@ -873,19 +873,19 @@ namespace GamblingMod
             while (card >= 13) { card -= 13; }
             total = Math.Min(card + 1, 10).ToString();
             spawnedOptionsMenu.transform.GetChild(4).GetComponent<TextMeshPro>().text = total;
-            spawnedOptionsMenu.transform.GetChild(4).gameObject.SetActive((bool)Main.showHandCount.SavedValue);
+            spawnedOptionsMenu.transform.GetChild(4).gameObject.SetActive(Preferences.showHandCount.Value);
             spawnedOptionsMenu.transform.GetChild(4).localPosition = new Vector3(-0.15f, 0f, 0.55f); //fixes weirdness about Text not being correct
-            spawnedOptionsMenu.transform.GetChild(4).gameObject.SetActive((bool)Main.showHandCount.SavedValue);
-            Log("SpawnOptionsMenu Completed", (bool)Main.debugging.SavedValue);
+            spawnedOptionsMenu.transform.GetChild(4).gameObject.SetActive(Preferences.showHandCount.Value);
+            Log("SpawnOptionsMenu Completed", Preferences.debugging.Value);
             return spawnedOptionsMenu;
         }
 
         //spawns optionsMenu menu and waits for an option to be pressed
         private IEnumerator RunOptionsMenu(int thisHand)
         {
-            Log("RunOptionsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("RunOptionsMenu Started", Preferences.debugging.Value);
             GameObject optionsMenu = SpawnOptionsMenu(thisHand);
-            Log("Spawned Options Menu, Waiting for Selection", (bool)Main.debugging.SavedValue);
+            Log("Spawned Options Menu, Waiting for Selection", Preferences.debugging.Value);
             while (!pressedStay && !pressedHit && !pressedSplit)
             {
                 yield return new WaitForFixedUpdate();
@@ -893,10 +893,10 @@ namespace GamblingMod
             GameObject.Destroy(optionsMenu);
             if (pressedHit)
             {
-                Log("Pressed Hit", (bool)Main.debugging.SavedValue);
+                Log("Pressed Hit", Preferences.debugging.Value);
                 hand[thisHand].Add(DrawCard());
                 //add drawing card visual
-                Log($"Player Card {hand[thisHand].Count}: {tableInstance.CardString[hand[thisHand][hand[thisHand].Count - 1]]}", (bool)Main.debugging.SavedValue);
+                Log($"Player Card {hand[thisHand].Count}: {tableInstance.CardString[hand[thisHand][hand[thisHand].Count - 1]]}", Preferences.debugging.Value);
                 object playDrawAnimationCoroutine = PlayDrawCardAnimation(hand[thisHand][hand[thisHand].Count - 1], cardSpots.transform.GetChild(0).GetChild(hand[thisHand].Count - 1), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
                 yield return playDrawAnimationCoroutine;
                 if (GetCardsTotal(hand[thisHand]) < 21)
@@ -906,18 +906,18 @@ namespace GamblingMod
                 }
                 else
                 {
-                    if (GetCardsTotal(hand[thisHand]) > 21) { Log("Player Bust, Total: " + GetCardsTotal(hand[thisHand]), (bool)Main.debugging.SavedValue); }
-                    else { Log("Player Got 21, Stopping Hand", (bool)Main.debugging.SavedValue); }
+                    if (GetCardsTotal(hand[thisHand]) > 21) { Log("Player Bust, Total: " + GetCardsTotal(hand[thisHand]), Preferences.debugging.Value); }
+                    else { Log("Player Got 21, Stopping Hand", Preferences.debugging.Value); }
                 }
             }
             else if (pressedStay)
             {
-                Log("Pressed Stay", (bool)Main.debugging.SavedValue);
+                Log("Pressed Stay", Preferences.debugging.Value);
                 //all hands need to conclude first
             }
             else if (pressedSplit)
             {
-                Log("Pressed Split", (bool)Main.debugging.SavedValue);
+                Log("Pressed Split", Preferences.debugging.Value);
                 Log("Player Split Bet Accepted: " + betAmount, true);
                 Main.Payout(-betAmount, 1f, tableInstance);
                 betHeldAmount += betAmount;
@@ -939,7 +939,7 @@ namespace GamblingMod
                     }
                     cardsString += " ";
                 }
-                Log($"Hand {thisHand}: {cardsString}", (bool)Main.debugging.SavedValue);
+                Log($"Hand {thisHand}: {cardsString}", Preferences.debugging.Value);
                 cardsString = "";
                 foreach (int i in secondHand)
                 {
@@ -953,10 +953,10 @@ namespace GamblingMod
                     }
                     cardsString += " ";
                 }
-                Log($"Next Hand: {cardsString}", (bool)Main.debugging.SavedValue);
+                Log($"Next Hand: {cardsString}", Preferences.debugging.Value);
                 ClearVisualCardsFromAHand(true);
                 //hand 1
-                Log($"Playing First Hand", (bool)Main.debugging.SavedValue);
+                Log($"Playing First Hand", Preferences.debugging.Value);
                 object drawSplitCoroutine = MelonCoroutines.Start(DrawSplit(thisHand));
                 yield return drawSplitCoroutine;
                 if (GetCardsTotal(hand[thisHand]) < 21)
@@ -967,12 +967,12 @@ namespace GamblingMod
                 else
                 yield return new WaitForSeconds(1f);
                 //setup for next hand
-                Log($"Setting Up For Next Hand", (bool)Main.debugging.SavedValue);
+                Log($"Setting Up For Next Hand", Preferences.debugging.Value);
                 ClearVisualCardsFromAHand(true);
                 hand.Add(secondHand);
                 int secondHandSpot = hand.Count - 1;
                 //next hand
-                Log($"Playing Next Hand", (bool)Main.debugging.SavedValue);
+                Log($"Playing Next Hand", Preferences.debugging.Value);
                 drawSplitCoroutine = MelonCoroutines.Start(DrawSplit(secondHandSpot, true));
                 yield return drawSplitCoroutine;
                 if (GetCardsTotal(hand[secondHandSpot]) <= 21)
@@ -982,13 +982,13 @@ namespace GamblingMod
                 }
                 yield return new WaitForSeconds(1f);
             }
-            Log("RunOptionsMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("RunOptionsMenu Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private void ClearVisualCardsFromAHand(bool isPlayer)
         {
-            Log($"Clearing {(isPlayer ? "Player's" : "Dealer's")} Cards", (bool)Main.debugging.SavedValue);
+            Log($"Clearing {(isPlayer ? "Player's" : "Dealer's")} Cards", Preferences.debugging.Value);
             int spot = isPlayer ? 0 : 1;
             for (int i = 0; i < cardSpots.transform.GetChild(spot).GetChildCount(); i++)
             {
@@ -1027,7 +1027,7 @@ namespace GamblingMod
 
         private IEnumerator DealersTurn()
         {
-            Log("DealersTurn Started", (bool)Main.debugging.SavedValue);
+            Log("DealersTurn Started", Preferences.debugging.Value);
             //flip card
             object revealDealerCardCoroutine = MelonCoroutines.Start(RevealDealerCard());
             yield return revealDealerCardCoroutine;
@@ -1045,14 +1045,14 @@ namespace GamblingMod
                 hasSoft17 = (dealerTotal == 17) && hasAce && aceIs11;
                 yield return new WaitForSeconds(0.25f);
             }
-            Log("DealersTurn Completed", (bool)Main.debugging.SavedValue);
+            Log("DealersTurn Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator DealerDraw()
         {
             dealerHand.Add(DrawCard());
-            Log($"Dealer Card {dealerHand.Count}: " + tableInstance.CardString[dealerHand[dealerHand.Count - 1]], (bool)Main.debugging.SavedValue);
+            Log($"Dealer Card {dealerHand.Count}: " + tableInstance.CardString[dealerHand[dealerHand.Count - 1]], Preferences.debugging.Value);
             object playDrawAnimationCoroutine = PlayDrawCardAnimation(dealerHand[dealerHand.Count - 1], cardSpots.transform.GetChild(1).GetChild(dealerHand.Count - 1), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
             yield return playDrawAnimationCoroutine;
             yield break;
@@ -1060,7 +1060,7 @@ namespace GamblingMod
 
         private void SetupOptionsMenu()
         {
-            Log("SetupOptionsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SetupOptionsMenu Started", Preferences.debugging.Value);
             if (storedOptionsMenu != null) { GameObject.Destroy(storedOptionsMenu); }
             storedOptionsMenu = new GameObject("OptionsMenu");
             storedOptionsMenu.transform.SetParent(storedGamePartsTransform);
@@ -1099,7 +1099,7 @@ namespace GamblingMod
                 /*rotation*/Quaternion.Euler(90f, 180f, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.55f));
             dealerHandText.SetActive(false);
-            Log("SetupOptionsMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupOptionsMenu Completed", Preferences.debugging.Value);
         }
 
         private bool SplitIsPossible(List<int> thisHand)
@@ -1108,7 +1108,7 @@ namespace GamblingMod
             int card2 = thisHand[1];
             while (card1 >= 13) { card1 -= 13; }
             while (card2 >= 13) { card2 -= 13; }
-            Log("Is Split Possible: " + ((card1 == card2) && (tableInstance.freePlay || (Main.GetPlayerCoinCount() >= (betAmount + betHeldAmount)))), (bool)Main.debugging.SavedValue);
+            Log("Is Split Possible: " + ((card1 == card2) && (tableInstance.freePlay || (Main.GetPlayerCoinCount() >= (betAmount + betHeldAmount)))), Preferences.debugging.Value);
             return ((card1 == card2) && (Main.GetPlayerCoinCount() >= (betAmount + betHeldAmount)));
         }
 

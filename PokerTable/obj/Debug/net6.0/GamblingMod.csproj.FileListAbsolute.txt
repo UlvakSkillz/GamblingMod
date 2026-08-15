@@ -113,3 +113,10 @@ C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Iced.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppLIV.LCKCore.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppLIV.LCKCore.ThirdParty.MessagePack.dll
 C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppSystem.Numerics.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Il2CppDiscord.Sdk.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.XR.CompositionLayers.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UnityEngine.VideoModule.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\Unity.XR.CoreUtils.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\RumbleModdingAPI.xml
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UIFramework.dll
+C:\Users\austi\source\repos\PokerTable\PokerTable\bin\Debug\net6.0\UIFramework.xml

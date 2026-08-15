@@ -99,45 +99,45 @@ namespace GamblingMod
 
         public IEnumerator Run()
         {
-            Log("Run Running", (bool)Main.debugging.SavedValue);
+            Log("Run Running", Preferences.debugging.Value);
             SetupStart();
             gameLoopCoroutine = MelonCoroutines.Start(GameLoop());
             yield return gameLoopCoroutine;
-            Log("Run Completed", (bool)Main.debugging.SavedValue);
+            Log("Run Completed", Preferences.debugging.Value);
         }
 
         private void SetupStart()
         {
-            Log("SetupStart Running", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Running", Preferences.debugging.Value);
             gameLoopRunning = false;
             RandomizeDeck();
             SetupBetMenu();
             SetupOptionsMenu();
-            Log("SetupStart Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Completed", Preferences.debugging.Value);
         }
 
         private GameObject cardSpots = null;
         private void SetupCardSpots()
         {
-            Log("SetupStart Started", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Started", Preferences.debugging.Value);
             cardSpots = GameObject.Instantiate(storedGamePartsTransform.GetChild(2).gameObject);
             cardSpots.name = "CardSpots";
             cardSpots.transform.SetParent(activeGamePartsTransform);
             cardSpots.transform.localPosition = Vector3.zero;
             cardSpots.transform.localRotation = Quaternion.identity;
             cardSpots.transform.localScale = Vector3.one;
-            Log("SetupStart Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Completed", Preferences.debugging.Value);
         }
 
         private int coinsGained = 0;
         private IEnumerator GameLoop()
         {
-            Log("GameLoop Running", (bool)Main.debugging.SavedValue);
+            Log("GameLoop Running", Preferences.debugging.Value);
             gameLoopRunning = true;
             while (gameLoopRunning)
             {
                 //reshuffle if needed
-                if (deck.Count <= 26 * (int)Main.deckCount.SavedValue)
+                if (deck.Count <= 26 * Preferences.deckCount.Value)
                 {
                     RandomizeDeck(false);
                     yield return new WaitForSeconds(1f);
@@ -156,7 +156,7 @@ namespace GamblingMod
                     endGameTextTMP.alignment = TextAlignmentOptions.Center;
                     endGameTextTMP.enableWordWrapping = false;
                     continueShuffling = false;
-                    Log("Not Enough Coins, Exiting Jacks Or Better", (bool)Main.debugging.SavedValue);
+                    Log("Not Enough Coins, Exiting Jacks Or Better", Preferences.debugging.Value);
                     yield return new WaitForSeconds(1.5f);
                     gameLoopRunning = false;
                     break;
@@ -211,14 +211,14 @@ namespace GamblingMod
                 }
                 tableInstance.ClearActiveObjects();
             }
-            Log("GameLoop Completed", (bool)Main.debugging.SavedValue);
+            Log("GameLoop Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private PayoutResult thisHandsPayout = PayoutResult.Nothing;
         private IEnumerator CheckPayout()
         {
-            Log("CheckPayout Started", (bool)Main.debugging.SavedValue);
+            Log("CheckPayout Started", Preferences.debugging.Value);
             thisHandsPayout = GetWinType();
             coinsGained = Main.Payout(betAmount, payoutsAmounts[(int)thisHandsPayout], tableInstance);
             Log($"Hand Contains: {payoutsString[(int)thisHandsPayout]}, Paying Out: {coinsGained}", true);
@@ -232,13 +232,13 @@ namespace GamblingMod
                 payoutCoroutine = MelonCoroutines.Start(PlayPlayerWin());
             }
             yield return payoutCoroutine;
-            Log("CheckPayout Completed", (bool)Main.debugging.SavedValue);
+            Log("CheckPayout Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator PlayPlayerWin()
         {
-            Log("PlayPlayerWin Started", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerWin Started", Preferences.debugging.Value);
             List<object> coroutines = new List<object>();
             yield return new WaitForSeconds(0.25f);
             for (int i = 0; i < 5; i++)
@@ -248,13 +248,13 @@ namespace GamblingMod
             }
             foreach (object coroutine in coroutines) { yield return coroutine; }
             yield return new WaitForSeconds(0.25f);
-            Log("PlayPlayerWin Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerWin Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator PlayPlayerLose()
         {
-            Log("PlayPlayerLose Started", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerLose Started", Preferences.debugging.Value);
             List<object> coroutines = new List<object>();
             yield return new WaitForSeconds(0.25f);
             for (int i = 0; i < 5; i++)
@@ -263,7 +263,7 @@ namespace GamblingMod
             }
             foreach(object coroutine in coroutines) { yield return coroutine; }
             yield return new WaitForSeconds(0.25f);
-            Log("PlayPlayerLose Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayPlayerLose Completed", Preferences.debugging.Value);
             yield break;
         }
 
@@ -489,7 +489,7 @@ namespace GamblingMod
 
         private IEnumerator PlayHand()
         {
-            Log("PlayHand Running", (bool)Main.debugging.SavedValue);
+            Log("PlayHand Running", Preferences.debugging.Value);
             hand = new List<int>();
             SetupCardSpots();
             //deal hand
@@ -498,39 +498,39 @@ namespace GamblingMod
             yield return MelonCoroutines.Start(RunOptionsMenu());
             //replace removed cards
             yield return MelonCoroutines.Start(ReplaceMissingCardsInHand());
-            Log("PlayHand Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayHand Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator DrawStartingHand()
         {
-            Log("DrawStartingHand Started", (bool)Main.debugging.SavedValue);
+            Log("DrawStartingHand Started", Preferences.debugging.Value);
             hand.Add(DrawCard());
-            Log("Player Card 1: " + tableInstance.CardString[hand[0]], (bool)Main.debugging.SavedValue);
+            Log("Player Card 1: " + tableInstance.CardString[hand[0]], Preferences.debugging.Value);
             yield return PlayDrawCardAnimation(hand[0], cardSpots.transform.GetChild(0), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
 
             hand.Add(DrawCard());
-            Log("Player Card 2: " + tableInstance.CardString[hand[1]], (bool)Main.debugging.SavedValue);
+            Log("Player Card 2: " + tableInstance.CardString[hand[1]], Preferences.debugging.Value);
             yield return PlayDrawCardAnimation(hand[1], cardSpots.transform.GetChild(1), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
 
             hand.Add(DrawCard());
-            Log("Player Card 3: " + tableInstance.CardString[hand[2]], (bool)Main.debugging.SavedValue);
+            Log("Player Card 3: " + tableInstance.CardString[hand[2]], Preferences.debugging.Value);
             yield return PlayDrawCardAnimation(hand[2], cardSpots.transform.GetChild(2), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
 
             hand.Add(DrawCard());
-            Log("Player Card 4: " + tableInstance.CardString[hand[3]], (bool)Main.debugging.SavedValue);
+            Log("Player Card 4: " + tableInstance.CardString[hand[3]], Preferences.debugging.Value);
             yield return PlayDrawCardAnimation(hand[3], cardSpots.transform.GetChild(3), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
 
             hand.Add(DrawCard());
-            Log("Player Card 5: " + tableInstance.CardString[hand[4]], (bool)Main.debugging.SavedValue);
+            Log("Player Card 5: " + tableInstance.CardString[hand[4]], Preferences.debugging.Value);
             yield return PlayDrawCardAnimation(hand[4], cardSpots.transform.GetChild(4), tableInstance.dealerDeck.transform.GetChild(0).GetChild(0).position, Quaternion.Euler(-180, 0, 0));
-            Log("DrawStartingHand Completed", (bool)Main.debugging.SavedValue);
+            Log("DrawStartingHand Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private IEnumerator ReplaceMissingCardsInHand()
         {
-            Log("ReplaceMissingCardsInHand Started", (bool)Main.debugging.SavedValue);
+            Log("ReplaceMissingCardsInHand Started", Preferences.debugging.Value);
             for (int i = 0; i < 5; i++)
             {
                 if (hand[i] == -1)
@@ -540,19 +540,19 @@ namespace GamblingMod
                     yield return new WaitForSeconds(0.25f);
                 }
             }
-            Log("ReplaceMissingCardsInHand Completed", (bool)Main.debugging.SavedValue);
+            Log("ReplaceMissingCardsInHand Completed", Preferences.debugging.Value);
             yield break;
         }
 
         //Note: position, not localPosition. This sets the linear path to localPosition 0,0 in animation
         private object PlayDrawCardAnimation(int CardToDraw, Transform parent, Vector3 position, Quaternion localRotation, bool playRotate = true)
         {
-            Log("PlayDrawCardAnimation Started", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawCardAnimation Started", Preferences.debugging.Value);
             GameObject card = GameObject.Instantiate(tableInstance.storedDeckOfCards.transform.GetChild(CardToDraw).gameObject);
             card.transform.SetParent(parent);
             card.transform.position = position;
             card.transform.localRotation = localRotation;
-            Log("PlayDrawCardAnimation Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawCardAnimation Completed", Preferences.debugging.Value);
             return MelonCoroutines.Start(PlayDrawAnimation(card, 25, playRotate));
         }
 
@@ -568,7 +568,7 @@ namespace GamblingMod
         //moves it to localPosition 0. flips 180 unless specified (dealer card 2)
         private IEnumerator PlayDrawAnimation(GameObject card, int ticks = 25, bool playRotate = true)
         {
-            Log("PlayDrawAnimation Started", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawAnimation Started", Preferences.debugging.Value);
             Vector3 distancePerTick = (card.transform.localPosition) / ticks;
             float rotationPerTick = 180f / ((float)ticks);
             float currentRotationX = card.transform.localRotation.eulerAngles.x;
@@ -584,28 +584,28 @@ namespace GamblingMod
                 }
                 yield return new WaitForFixedUpdate();
             }
-            Log("PlayDrawAnimation Completed", (bool)Main.debugging.SavedValue);
+            Log("PlayDrawAnimation Completed", Preferences.debugging.Value);
             yield break;
         }
 
         //spawns bet menu and waits for an option to be pressed
         private IEnumerator RunBetMenu()
         {
-            Log("RunBetMenu Started", (bool)Main.debugging.SavedValue);
+            Log("RunBetMenu Started", Preferences.debugging.Value);
             betAmount = 1;
             GameObject betsMenu = SpawnBetsMenu();
-            Log("Spawned Bets Menu, Waiting for Accepted Bet", (bool)Main.debugging.SavedValue);
+            Log("Spawned Bets Menu, Waiting for Accepted Bet", Preferences.debugging.Value);
             while (!betAccepted && !userQuits)
             {
                 yield return new WaitForFixedUpdate();
             }
-            Log("RunBetMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("RunBetMenu Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private GameObject SpawnBetsMenu()
         {
-            Log("SpawnBetsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SpawnBetsMenu Started", Preferences.debugging.Value);
             GameObject spawnedBetsMenu = GameObject.Instantiate(storedBetsMenu);
             spawnedBetsMenu.transform.SetParent(activeGamePartsTransform);
             spawnedBetsMenu.transform.localPosition = new Vector3(0, tableInstance.TABLEHEIGHT - 0.052f, 0);
@@ -616,81 +616,81 @@ namespace GamblingMod
             UpdateBetAmountText();
             //Bet Down
             spawnedBetsMenu.transform.GetChild(2).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Down Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Down Pressed", Preferences.debugging.Value);
                 if (1 < betAmount)
                 {
                     betAmount--;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Up
             spawnedBetsMenu.transform.GetChild(3).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Up Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Up Pressed", Preferences.debugging.Value);
                 if (Main.GetPlayerCoinCount() >= betAmount + 1)
                 {
                     betAmount++;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Down 10
             spawnedBetsMenu.transform.GetChild(4).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Down Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Down Pressed", Preferences.debugging.Value);
                 if (10 < betAmount)
                 {
                     betAmount -= 10;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Up 10
             spawnedBetsMenu.transform.GetChild(5).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Up Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Up Pressed", Preferences.debugging.Value);
                 if (Main.GetPlayerCoinCount() >= betAmount + 10)
                 {
                     betAmount += 10;
-                    Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                    Log("New Bet: " + betAmount, Preferences.debugging.Value);
                     UpdateBetAmountText();
                 }
             }));
             //Bet Accepted
             spawnedBetsMenu.transform.GetChild(6).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Accepted: " + betAmount, (bool)Main.debugging.SavedValue);
+                Log("Bet Accepted: " + betAmount, Preferences.debugging.Value);
                 betAccepted = true;
                 continueShuffling = false;
             }));
             //Quit
             spawnedBetsMenu.transform.GetChild(7).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("User Quit During Betting", (bool)Main.debugging.SavedValue);
+                Log("User Quit During Betting", Preferences.debugging.Value);
                 userQuits = true;
                 continueShuffling = false;
             }));
             //Bet Min
             spawnedBetsMenu.transform.GetChild(8).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Min Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Min Pressed", Preferences.debugging.Value);
                 betAmount = 1;
-                Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                Log("New Bet: " + betAmount, Preferences.debugging.Value);
                 UpdateBetAmountText();
             }));
             //Bet Max
             spawnedBetsMenu.transform.GetChild(9).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Bet Max Pressed", (bool)Main.debugging.SavedValue);
+                Log("Bet Max Pressed", Preferences.debugging.Value);
                 betAmount = Main.GetPlayerCoinCount();
-                Log("New Bet: " + betAmount, (bool)Main.debugging.SavedValue);
+                Log("New Bet: " + betAmount, Preferences.debugging.Value);
                 UpdateBetAmountText();
             }));
-            spawnedBetsMenu.transform.GetChild(9).GetChild(2).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
+            spawnedBetsMenu.transform.GetChild(9).GetChild(1).localPosition = new Vector3(0f, 0f, -0.25f); //fixes weirdness about Text not being correct
 
             betAccepted = false;
             userQuits = false;
-            Log("SpawnBetsMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("SpawnBetsMenu Completed", Preferences.debugging.Value);
             return spawnedBetsMenu;
         }
 
         private void RandomizeDeck(bool continueShuffling = true)
         {
-            Log("RandomizeDeck Running", (bool)Main.debugging.SavedValue);
+            Log("RandomizeDeck Running", Preferences.debugging.Value);
             object[] shufflings = tableInstance.ShuffleDealerDeck();
             if (continueShuffling)
             {
@@ -699,13 +699,13 @@ namespace GamblingMod
             deck = new List<int>();
             List<int> tempDeck = new List<int>();
             int cardCount = 0;
-            for (int i = 0; i < 52 * (int)Main.deckCount.SavedValue; i++)
+            for (int i = 0; i < 52 * Preferences.deckCount.Value; i++)
             {
                 deck.Add(cardCount);
                 cardCount++;
                 if (cardCount == 52) { cardCount = 0; }
             }
-            Log("Deck Setup Done", (bool)Main.debugging.SavedValue);
+            Log("Deck Setup Done", Preferences.debugging.Value);
             tableInstance.dealerDeck.transform.localScale = new Vector3(1, ((float)deck.Count) / 52f, 1);
             tempDeck.Clear();
             while (deck.Count > 0)
@@ -715,7 +715,7 @@ namespace GamblingMod
                 deck.RemoveAt(spot);
             }
             deck.AddRange(tempDeck);
-            Log("RandomizeDeck Complete", (bool)Main.debugging.SavedValue);
+            Log("RandomizeDeck Complete", Preferences.debugging.Value);
         }
 
         private bool continueShuffling = true;
@@ -744,7 +744,7 @@ namespace GamblingMod
 
         private void SetupBetMenu()
         {
-            Log("SetupBetMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SetupBetMenu Started", Preferences.debugging.Value);
             if (storedBetsMenu != null) { GameObject.Destroy(storedBetsMenu); }
             storedBetsMenu = new GameObject("BetsMenu");
             storedBetsMenu.transform.SetParent(storedGamePartsTransform);
@@ -819,13 +819,13 @@ namespace GamblingMod
                 /*position*/ new Vector3(-0.5f, 0f, 0.8f),
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
-            Log("SetupBetMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupBetMenu Completed", Preferences.debugging.Value);
         }
 
         private bool pressedContinue, removeCard1 = true, removeCard2 = true, removeCard3 = true, removeCard4 = true, removeCard5 = true;
         private GameObject SpawnOptionsMenu()
         {
-            Log("SpawnOptionsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SpawnOptionsMenu Started", Preferences.debugging.Value);
             pressedContinue = false;
             removeCard1 = true;
             removeCard2 = true;
@@ -839,102 +839,102 @@ namespace GamblingMod
             spawnedOptionsMenu.transform.localScale = Vector3.one;
             //card 1
             spawnedOptionsMenu.transform.GetChild(0).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Card 1 Pressed", (bool)Main.debugging.SavedValue);
+                Log("Card 1 Pressed", Preferences.debugging.Value);
                 removeCard1 = !removeCard1;
-                spawnedOptionsMenu.transform.GetChild(0).GetChild(2).GetComponent<TextMeshPro>().text = removeCard1 ? "Remove" : "Keep";
+                spawnedOptionsMenu.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = removeCard1 ? "Remove" : "Keep";
             }));
-            spawnedOptionsMenu.transform.GetChild(0).GetChild(2).GetComponent<TextMeshPro>().text = "Remove";
+            spawnedOptionsMenu.transform.GetChild(0).GetChild(1).GetComponent<TextMeshPro>().text = "Remove";
             //card 2
             spawnedOptionsMenu.transform.GetChild(1).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Card 2 Pressed", (bool)Main.debugging.SavedValue);
+                Log("Card 2 Pressed", Preferences.debugging.Value);
                 removeCard2 = !removeCard2;
-                spawnedOptionsMenu.transform.GetChild(1).GetChild(2).GetComponent<TextMeshPro>().text = removeCard2 ? "Remove" : "Keep";
+                spawnedOptionsMenu.transform.GetChild(1).GetChild(1).GetComponent<TextMeshPro>().text = removeCard2 ? "Remove" : "Keep";
             }));
-            spawnedOptionsMenu.transform.GetChild(1).GetChild(2).GetComponent<TextMeshPro>().text = "Remove";
+            spawnedOptionsMenu.transform.GetChild(1).GetChild(1).GetComponent<TextMeshPro>().text = "Remove";
             //card 3
             spawnedOptionsMenu.transform.GetChild(2).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Card 3 Pressed", (bool)Main.debugging.SavedValue);
+                Log("Card 3 Pressed", Preferences.debugging.Value);
                 removeCard3 = !removeCard3;
-                spawnedOptionsMenu.transform.GetChild(2).GetChild(2).GetComponent<TextMeshPro>().text = removeCard3 ? "Remove" : "Keep";
+                spawnedOptionsMenu.transform.GetChild(2).GetChild(1).GetComponent<TextMeshPro>().text = removeCard3 ? "Remove" : "Keep";
             }));
-            spawnedOptionsMenu.transform.GetChild(2).GetChild(2).GetComponent<TextMeshPro>().text = "Remove";
+            spawnedOptionsMenu.transform.GetChild(2).GetChild(1).GetComponent<TextMeshPro>().text = "Remove";
             //card 4
             spawnedOptionsMenu.transform.GetChild(3).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Card 4 Pressed", (bool)Main.debugging.SavedValue);
+                Log("Card 4 Pressed", Preferences.debugging.Value);
                 removeCard4 = !removeCard4;
-                spawnedOptionsMenu.transform.GetChild(3).GetChild(2).GetComponent<TextMeshPro>().text = removeCard4 ? "Remove" : "Keep";
+                spawnedOptionsMenu.transform.GetChild(3).GetChild(1).GetComponent<TextMeshPro>().text = removeCard4 ? "Remove" : "Keep";
             }));
-            spawnedOptionsMenu.transform.GetChild(3).GetChild(2).GetComponent<TextMeshPro>().text = "Remove";
+            spawnedOptionsMenu.transform.GetChild(3).GetChild(1).GetComponent<TextMeshPro>().text = "Remove";
             //card 5
             spawnedOptionsMenu.transform.GetChild(4).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Card 5 Pressed", (bool)Main.debugging.SavedValue);
+                Log("Card 5 Pressed", Preferences.debugging.Value);
                 removeCard5 = !removeCard5;
-                spawnedOptionsMenu.transform.GetChild(4).GetChild(2).GetComponent<TextMeshPro>().text = removeCard5 ? "Remove" : "Keep";
+                spawnedOptionsMenu.transform.GetChild(4).GetChild(1).GetComponent<TextMeshPro>().text = removeCard5 ? "Remove" : "Keep";
             }));
-            spawnedOptionsMenu.transform.GetChild(4).GetChild(2).GetComponent<TextMeshPro>().text = "Remove";
+            spawnedOptionsMenu.transform.GetChild(4).GetChild(1).GetComponent<TextMeshPro>().text = "Remove";
             //continue
             spawnedOptionsMenu.transform.GetChild(5).GetChild(0).GetComponent<InteractionButton>().onPressed.AddListener((Action)(() => {
-                Log("Continue Pressed", (bool)Main.debugging.SavedValue);
+                Log("Continue Pressed", Preferences.debugging.Value);
                 pressedContinue = true;
             }));
-            spawnedOptionsMenu.transform.GetChild(5).GetChild(2).localPosition = new Vector3(0f, 0f, -0.2f); //fixes weirdness about Text not being correct
-            Log("SpawnOptionsMenu Completed", (bool)Main.debugging.SavedValue);
+            spawnedOptionsMenu.transform.GetChild(5).GetChild(1).localPosition = new Vector3(0f, 0f, -0.2f); //fixes weirdness about Text not being correct
+            Log("SpawnOptionsMenu Completed", Preferences.debugging.Value);
             return spawnedOptionsMenu;
         }
 
         //spawns optionsMenu menu and waits for an option to be pressed
         private IEnumerator RunOptionsMenu()
         {
-            Log("RunOptionsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("RunOptionsMenu Started", Preferences.debugging.Value);
             GameObject optionsMenu = SpawnOptionsMenu();
-            Log("Spawned Options Menu, Waiting for Selection", (bool)Main.debugging.SavedValue);
+            Log("Spawned Options Menu, Waiting for Selection", Preferences.debugging.Value);
             while (!pressedContinue)
             {
                 yield return new WaitForFixedUpdate();
             }
             GameObject.Destroy(optionsMenu);
             //options done, removing cards selected for removal
-            Log($"Keep / Remove List: {removeCard1} {removeCard2} {removeCard3} {removeCard4} {removeCard5}", (bool)Main.debugging.SavedValue);
+            Log($"Keep / Remove List: {removeCard1} {removeCard2} {removeCard3} {removeCard4} {removeCard5}", Preferences.debugging.Value);
             List<object> cardsRemoving = new List<object>();
             if (removeCard1)
             {
-                Log("Removing Card 1", (bool)Main.debugging.SavedValue);
+                Log("Removing Card 1", Preferences.debugging.Value);
                 cardsRemoving.Add(MelonCoroutines.Start(PlayCardShrinkCoroutine(cardSpots.transform.GetChild(0).GetChild(0).gameObject, true)));
                 hand[0] = -1;
             }
             if (removeCard2)
             {
-                Log("Removing Card 2", (bool)Main.debugging.SavedValue);
+                Log("Removing Card 2", Preferences.debugging.Value);
                 cardsRemoving.Add(MelonCoroutines.Start(PlayCardShrinkCoroutine(cardSpots.transform.GetChild(1).GetChild(0).gameObject, true)));
                 hand[1] = -1;
             }
             if (removeCard3)
             {
-                Log("Removing Card 3", (bool)Main.debugging.SavedValue);
+                Log("Removing Card 3", Preferences.debugging.Value);
                 cardsRemoving.Add(MelonCoroutines.Start(PlayCardShrinkCoroutine(cardSpots.transform.GetChild(2).GetChild(0).gameObject, true)));
                 hand[2] = -1;
             }
             if (removeCard4)
             {
-                Log("Removing Card 4", (bool)Main.debugging.SavedValue);
+                Log("Removing Card 4", Preferences.debugging.Value);
                 cardsRemoving.Add(MelonCoroutines.Start(PlayCardShrinkCoroutine(cardSpots.transform.GetChild(3).GetChild(0).gameObject, true)));
                 hand[3] = -1;
             }
             if (removeCard5)
             {
-                Log("Removing Card 5", (bool)Main.debugging.SavedValue);
+                Log("Removing Card 5", Preferences.debugging.Value);
                 cardsRemoving.Add(MelonCoroutines.Start(PlayCardShrinkCoroutine(cardSpots.transform.GetChild(4).GetChild(0).gameObject, true)));
                 hand[4] = -1;
             }
             //wait for removal of cards to be complete
             foreach (object coroutine in cardsRemoving) { yield return coroutine; }
-            Log("RunOptionsMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("RunOptionsMenu Completed", Preferences.debugging.Value);
             yield break;
         }
 
         private void ClearCardSpots()
         {
-            Log("Clearing Card Spots", (bool)Main.debugging.SavedValue);
+            Log("Clearing Card Spots", Preferences.debugging.Value);
             for (int i = 0; i < cardSpots.transform.GetChildCount(); i++)
             {
                 for (int x = cardSpots.transform.GetChild(i).childCount - 1; x >= 0; x--)
@@ -946,7 +946,7 @@ namespace GamblingMod
 
         private void SetupOptionsMenu()
         {
-            Log("SetupOptionsMenu Started", (bool)Main.debugging.SavedValue);
+            Log("SetupOptionsMenu Started", Preferences.debugging.Value);
             if (storedOptionsMenu != null) { GameObject.Destroy(storedOptionsMenu); }
             storedOptionsMenu = new GameObject("OptionsMenu");
             storedOptionsMenu.transform.SetParent(storedGamePartsTransform);
@@ -960,8 +960,8 @@ namespace GamblingMod
                 /*position*/ new Vector3(0.1228f * 2f, 0f, 0.8f),
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
-            button.transform.GetChild(2).localPosition = new Vector3(0, 0, -0.2f);
-            textMeshPro = button.transform.GetChild(2).GetComponent<TextMeshPro>();
+            button.transform.GetChild(1).localPosition = new Vector3(0, 0, -0.2f);
+            textMeshPro = button.transform.GetChild(1).GetComponent<TextMeshPro>();
             textMeshPro.fontSize = 0.75f;
             textMeshPro.text = "Remove";
 
@@ -970,8 +970,8 @@ namespace GamblingMod
                 /*position*/ new Vector3(0.1228f, 0f, 0.8f),
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
-            button.transform.GetChild(2).localPosition = new Vector3(0, 0, -0.2f);
-            textMeshPro = button.transform.GetChild(2).GetComponent<TextMeshPro>();
+            button.transform.GetChild(1).localPosition = new Vector3(0, 0, -0.2f);
+            textMeshPro = button.transform.GetChild(1).GetComponent<TextMeshPro>();
             textMeshPro.fontSize = 0.75f;
             textMeshPro.text = "Remove";
 
@@ -980,8 +980,8 @@ namespace GamblingMod
                 /*position*/ new Vector3(0f, 0f, 0.8f),
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
-            button.transform.GetChild(2).localPosition = new Vector3(0, 0, -0.2f);
-            textMeshPro = button.transform.GetChild(2).GetComponent<TextMeshPro>();
+            button.transform.GetChild(1).localPosition = new Vector3(0, 0, -0.2f);
+            textMeshPro = button.transform.GetChild(1).GetComponent<TextMeshPro>();
             textMeshPro.fontSize = 0.75f;
             textMeshPro.text = "Remove";
 
@@ -990,8 +990,8 @@ namespace GamblingMod
                 /*position*/ new Vector3(-0.1228f, 0f, 0.8f),
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
-            button.transform.GetChild(2).localPosition = new Vector3(0, 0, -0.2f);
-            textMeshPro = button.transform.GetChild(2).GetComponent<TextMeshPro>();
+            button.transform.GetChild(1).localPosition = new Vector3(0, 0, -0.2f);
+            textMeshPro = button.transform.GetChild(1).GetComponent<TextMeshPro>();
             textMeshPro.fontSize = 0.75f;
             textMeshPro.text = "Remove";
 
@@ -1000,8 +1000,8 @@ namespace GamblingMod
                 /*position*/ new Vector3(0.1228f * -2f, 0f, 0.8f),
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
-            button.transform.GetChild(2).localPosition = new Vector3(0, 0, -0.2f);
-            textMeshPro = button.transform.GetChild(2).GetComponent<TextMeshPro>();
+            button.transform.GetChild(1).localPosition = new Vector3(0, 0, -0.2f);
+            textMeshPro = button.transform.GetChild(1).GetComponent<TextMeshPro>();
             textMeshPro.fontSize = 0.75f;
             textMeshPro.text = "Remove";
 
@@ -1011,7 +1011,7 @@ namespace GamblingMod
                 /*rotation*/Quaternion.Euler(0, 0, 0),
                 /*scale*/ new Vector3(0.5f, 0.5f, 0.5f));
 
-            Log("SetupOptionsMenu Completed", (bool)Main.debugging.SavedValue);
+            Log("SetupOptionsMenu Completed", Preferences.debugging.Value);
         }
 
         private void UpdateBetAmountText()

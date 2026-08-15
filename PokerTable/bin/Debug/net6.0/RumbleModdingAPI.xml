@@ -1,0 +1,506 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RumbleModdingAPI</name>
+    </assembly>
+    <members>
+        <member name="T:RumbleModdingAPI.RMAPI.Actions">
+            <summary>
+            Contains all the Actions to be able to Have listeners happen under certain conditions
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onModStringRecieved">
+            <summary>
+            Runs when Mod String is received from another player
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onModStringReceived">
+            <summary>
+            Runs when Mod String is received from another player
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onMyModsGathered">
+            <summary>
+            Runs when clients Mods are stored
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onMapInitialized">
+            <summary>
+            Runs when Map Changed and Map GameObjects are Stored
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onPlayerSpawned">
+            <summary>
+            Runs when a player spawns (supplies player that spawned)
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onMatchStarted">
+            <summary>
+            Runs when a Matchmaking Match begins
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onMatchEnded">
+            <summary>
+            Runs when a Matchmaking Match ends
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onRoundStarted">
+            <summary>
+            Runs when a Matchmaking Round begins
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onRoundEnded">
+            <summary>
+            Runs when a Matchmaking Round ends
+            </summary>
+        </member>
+        <member name="E:RumbleModdingAPI.RMAPI.Actions.onPlayerHealthChanged">
+            <summary>
+            Runs when a players health changes (supplies the player and amount)
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.AssetBundles">
+            <summary>
+            Unsed to Load AssetBundles
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAssetBundleGameObjectFromFile(System.String,System.String)">
+            <summary>
+            Returns a GameObject that is loaded from an AssetBundle File
+            </summary>
+            <param name="filePath"></param>
+            <param name="assetName"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAssetBundleFromFile(System.String)">
+            <summary>
+            Returns The AssetBundle that is loaded from an AssetBundle File (please remember to .Unload() the bundle)
+            </summary>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAssetFromFile``1(System.String,System.String)">
+            <summary>
+            Returns an Asset of a specified type that is loaded from an AssetBundle File
+            </summary>
+            <param name="filePath"></param>
+            <param name="assetName"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAllOfTypeFromFile``1(System.String)">
+            <summary>
+            Returns all assets from a specified AssetBundle File
+            </summary>
+            <param name="filePath"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAssetBundleFromStream(System.String,System.String,System.String)">
+            <summary>
+            Returns an AssetBundle from a stream (Embedded Resource) (please remember to .Unload() the bundle)
+            </summary>
+            <param name="modName"></param>
+            <param name="modAuthor"></param>
+            <param name="assetPath"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAssetBundleFromStream(MelonLoader.MelonMod,System.String)">
+            <summary>
+            Returns an AssetBundle from a stream (Embedded Resource) (please remember to .Unload() the bundle)
+            </summary>
+            <param name="instance"></param>
+            <param name="assetPath"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAssetFromStream``1(MelonLoader.MelonMod,System.String,System.String)">
+            <summary>
+            Returns as Asset from a stream (embedded resource)
+            </summary>
+            <param name="instance"></param>
+            <param name="path"></param>
+            <param name="assetName"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAllOfTypeFromStream``1(MelonLoader.MelonMod,System.String)">
+            <summary>
+            Returns a list of Assets of a specified type from a stream (Enbedded Resource)
+            </summary>
+            <param name="instance"></param>
+            <param name="path"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AssetBundles.LoadAssetFromStream``1(System.String,System.String,System.String,System.String)">
+            <summary>
+            Returns an Asset a stream (Enbedded Resource)
+            </summary>
+            <param name="modName"></param>
+            <param name="modAuthor"></param>
+            <param name="path"></param>
+            <param name="assetName"></param>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.AudioManager">
+            <summary>
+            Audio Manager to Create AudioCalls
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AudioManager.LoadWavFile(System.String)">
+            <summary>
+            CreateAudioCalls Triggers this but leaving this visible for others if they want it
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AudioManager.PlaySound(Il2CppRUMBLE.Audio.AudioCall,UnityEngine.Vector3,System.Boolean)">
+            <summary>
+            Plays a specified AudioCall at a Position
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AudioManager.CreateAudioCall(System.String,System.Single)">
+            <summary>
+            Creates an AudioCall and sets the clip to the file. Must be wav file. Sets the AudioCall/clip HideFlags to HideAndDontSave
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.AudioManager.CreateAudioCalls(System.String[],System.Single)">
+            <summary>
+            Creates a list of AudioCalls and sets the clips to the files. Must be wav files. Sets the AudioCalls/clips HideFlags to HideAndDontSave
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls">
+            <summary>
+            Contains Methods to get info about different stuff
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.IsInitialized">
+            <summary>
+            Returns true/false on if the API is Initialized
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.IsMapInitialized">
+            <summary>
+            Returns true/false on if the Map Objects have been stored
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls.Matchmaking">
+            <summary>
+            Be able to retrieve Matchmaking specific info
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Matchmaking.getMatchmakingTypeAsString">
+            <summary>
+            Returns a string readout of what Matchmaking Queue type is selected
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Matchmaking.getMatchmakingTypeAsInt">
+            <summary>
+            Returns an int readout of what Matchmaking Queue type is selected
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls.Mods">
+            <summary>
+            Be able to retrieve Mod specific info
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Mods.getMyModString">
+            <summary>
+            Returns the Mod list as a string
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Mods.getOpponentModString">
+            <summary>
+            (Use only in a Match) Returns the opponents Mod list as a string
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Mods.getMyMods">
+            <summary>
+            Returns the Mod list as a custom class
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Mods.getOpponentMods">
+            <summary>
+            (Use only in a Match) Returns the opponents Mod list as a custom class
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Mods.doesOpponentHaveMod(System.String,System.String,System.Boolean)">
+            <summary>
+            (Use only in a Match) Returns true/false on if the opponent's mod contains a mod matching the supplied info
+            </summary>
+            <param name="modName"></param>
+            <param name="ModVersion"></param>
+            <param name="matchVersion"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Mods.findOwnMod(System.String,System.String,System.Boolean)">
+            <summary>
+            Returns true/false on if a your mods contains a mod matching the supplied info
+            </summary>
+            <param name="modName"></param>
+            <param name="ModVersion"></param>
+            <param name="matchVersion"></param>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls.ControllerMap">
+            <summary>
+            Be able to retrieve Controller Input Values
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls.ControllerMap.RightController">
+            <summary>
+            Contains Right Controller Values
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.RightController.GetTrigger">
+            <summary>
+            Returns a float of the Right Controller Trigger Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.RightController.GetGrip">
+            <summary>
+            Returns a float of the Right Controller Grip Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.RightController.GetPrimary">
+            <summary>
+            Returns a float of the Right Controller Primary Button Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.RightController.GetSecondary">
+            <summary>
+            Returns a float of the Right Controller Secondary Button Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.RightController.GetJoystick">
+            <summary>
+            Returns a Vector2 of the Right Controller Joystick Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.RightController.GetJoystickClick">
+            <summary>
+            Returns a float of the Right Controller Joystick Click Value
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls.ControllerMap.LeftController">
+            <summary>
+            Contains Left Controller Values
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.LeftController.GetTrigger">
+            <summary>
+            Returns a float of the Left Controller Trigger Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.LeftController.GetGrip">
+            <summary>
+            Returns a float of the Left Controller Grip Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.LeftController.GetPrimary">
+            <summary>
+            Returns a float of the Left Controller Primary Button Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.LeftController.GetSecondary">
+            <summary>
+            Returns a float of the Left Controller Secondary Button Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.LeftController.GetJoystick">
+            <summary>
+            Returns a Vector2 of the Left Controller Joystick Value
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.ControllerMap.LeftController.GetJoystickClick">
+            <summary>
+            Returns a float of the Left Controller Joystick Click Value
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls.Scene">
+            <summary>
+            Be able to retrieve Scene specific info
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Scene.GetSceneName">
+            <summary>
+            Returns current scene name
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Scene.GetLastSceneName">
+            <summary>
+            Returns last scene name
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Calls.Players">
+            <summary>
+            Be able to retrieve Player specific info
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.IsHost">
+            <summary>
+            Returns true/false if the player is Hist of the lobby (returns false if not in a Photon Lobby)
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetAllPlayers">
+            <summary>
+            honestly just use PlayerManager.instance.AllPlayers
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetLocalPlayer">
+            <summary>
+            honestly just use PlayerManager.instance.localPlayer
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetLocalPlayerController">
+            <summary>
+            honestly just use PlayerManager.instance.localPlayer.Controller
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetEnemyPlayers">
+            <summary>
+            returns a list of only other people (in PlayerManager.instance.AllPlayers order)
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetClosestPlayer(UnityEngine.Vector3,System.Boolean)">
+            <summary>
+            Returns the Closest Player to a specified position (able to ignore local user)
+            </summary>
+            <param name="position"></param>
+            <param name="ignoreLocalController"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetClosestPlayer(UnityEngine.Vector3,Il2CppRUMBLE.Players.PlayerController)">
+            <summary>
+            Returns the Closest Player to a specified position while ignoring a spicific player
+            </summary>
+            <param name="position"></param>
+            <param name="ignoreController"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetPlayerByControllerType(Il2CppRUMBLE.Players.ControllerType)">
+            <summary>
+            Returns the Player to a specified by a controller type. (just use PlayerManager.instance.GetPlayer(controllerType))
+            </summary>
+            <param name="controllerType"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetPlayerByActorNo(System.Int32)">
+            <summary>
+            Returns the Player with a specified Actor Number
+            </summary>
+            <param name="actorNumber"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Calls.Players.GetPlayersInActorNoOrder">
+            <summary>
+            Returns a List of Players in order of Actor Number (oldest to youngest in the room)
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Create.NewText">
+            <summary>
+            Creates and returns a new Text GameObject
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Create.NewText(System.String,System.Single,UnityEngine.Color,UnityEngine.Vector3,UnityEngine.Quaternion)">
+            <summary>
+            Creates and returns a new Text GameObject with the specified Text, size, color, position, and rotation
+            </summary>
+            <param name="text"></param>
+            <param name="textSize"></param>
+            <param name="textColor"></param>
+            <param name="textPosition"></param>
+            <param name="textRotation"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Create.NewButton">
+            <summary>
+            Creates and returns a new Button
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Create.NewButton(UnityEngine.Vector3,UnityEngine.Quaternion)">
+            <summary>
+            Creates and returns a new Button at the Specified Position/Rotation
+            </summary>
+            <param name="buttonPosition"></param>
+            <param name="buttonRotation"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Create.NewButton(System.Action)">
+            <summary>
+            Creates and returns a new Button with a Listener of the supplied Action
+            </summary>
+            <param name="action"></param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Create.NewButton(UnityEngine.Vector3,UnityEngine.Quaternion,System.Action)">
+            <summary>
+            Creates and returns a new Button at the Specified Position/Rotation with a Listener of the supplied Action
+            </summary>
+            <param name="buttonPosition"></param>
+            <param name="buttonRotation"></param>
+            <param name="action"></param>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.GameObjects">
+            <summary>
+            Contains access to almost every GameObject in Rumble Maps
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:RumbleModdingAPI.RMAPI.GameObjects.DDOL" -->
+        <member name="T:RumbleModdingAPI.RMAPI.GameObjects.Gym">
+            <summary>
+            Contains access to almost every GameObject in Gym Map
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.GameObjects.Map0">
+            <summary>
+            Contains access to almost every GameObject in Map0/Ring Map
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.GameObjects.Map1">
+            <summary>
+            Contains access to almost every GameObject in Map1/Pit Map
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:RumbleModdingAPI.RMAPI.GameObjects.Park" -->
+        <member name="M:RumbleModdingAPI.RMAPI.Lighting.Lock(System.Int32)">
+            <summary>
+            Locks all lighting settings so they cannot be changed by other mods.
+            If a mod attempts to unlock lighting with a lower lock priority, it will be ignored.
+            </summary>
+            <param name="lockPriority">Use reasonable judgement when setting lock priority, your mod isn't the main character, and you likely don't need it.</param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Lighting.Unlock(System.Int32)">
+            <summary>
+            Attempts to unlock lighting settings so they can be changed again.
+            If a mod attempts to unlock lighting with a lower lock priority, it will be ignored.
+            </summary>
+            <param name="lockPriority">Use reasonable judgement when unlocking settings. your mod isn't the main character, and if someone's locked with high priority, it should probably stay that way.</param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Lighting.OnSceneWasLoaded">
+            <summary>
+            Reloads lighting settings on scene load, since RenderSettings is a per-scene object.
+            </summary>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Lighting.UseBounceLighting(System.Boolean)">
+            <summary>
+            Sets the current scene's lighting mode. Node: RUMBLE's Loader scene uses trilight by default.
+            </summary>
+            <param name="useBounce">If true, sets lighting mode to Trilight. If false, sets it back to skybox.</param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Lighting.SetSkyLightColor(System.Nullable{UnityEngine.Color})">
+            <summary>
+            Sets the color of the light applied to the top of all dynamically lit surfaces in the scene.
+            </summary>
+            <param name="color">The color to set. Leave null for default settings.</param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Lighting.SetHorizonLightColor(System.Nullable{UnityEngine.Color})">
+            <summary>
+            Sets the color of the light applied to the sides of all dynamically lit surfaces in the scene.
+            </summary>
+            <param name="color">The color to set. Leave null for default settings.</param>
+        </member>
+        <member name="M:RumbleModdingAPI.RMAPI.Lighting.SetGroundLightColor(System.Nullable{UnityEngine.Color})">
+            <summary>
+            Sets the color of the light applied to the bottom of all dynamically lit surfaces in the scene.
+            </summary>
+            <param name="color">The color to set. Leave null for default settings.</param>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Utilities.RumbleMod">
+            <summary>
+            this is a MelonMod but with a built in RaiseEvent manager
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.Utilities.ControllerInputPoller">
+            <summary>
+            an extention to RMAPI's input manager that does a lot of the work for you
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RMAPI.PhotonRPCs.PunRPC">
+            <summary>
+            add this attribute to a method inside of a MonoBehaviourPun component to use Photon's RPCs
+            </summary>
+        </member>
+        <member name="T:RumbleModdingAPI.RumbleModdingAPI">
+            <summary>
+            MelonMod Class
+            </summary>
+        </member>
+    </members>
+</doc>

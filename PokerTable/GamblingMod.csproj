@@ -55,6 +55,9 @@
     <Reference Include="RumbleModdingAPI">
       <HintPath>F:\SteamLibrary\steamapps\common\RUMBLE\Mods\RumbleModdingAPI.dll</HintPath>
     </Reference>
+    <Reference Include="UIFramework">
+      <HintPath>F:\SteamLibrary\steamapps\common\RUMBLE\Mods\UIFramework.dll</HintPath>
+    </Reference>
     <Reference Include="Unity.TextMeshPro">
       <HintPath>F:\SteamLibrary\steamapps\common\RUMBLE\MelonLoader\Il2CppAssemblies\Unity.TextMeshPro.dll</HintPath>
     </Reference>

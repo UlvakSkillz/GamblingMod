@@ -56,29 +56,29 @@ namespace GamblingMod
 
         void Start()
         {
-            Log("Start Started", (bool)Main.debugging.SavedValue);
+            Log("Start Started", Preferences.debugging.Value);
             instance = this;
             TABLEHEIGHT = 0.9974f;
             dealerDeck = this.transform.GetChild(0).GetChild(16).gameObject;
             storedDeckOfCards = this.transform.GetChild(1).GetChild(0).gameObject;
             SetupRandom();
             SetupStart();
-            Log("Start Completed", (bool)Main.debugging.SavedValue);
+            Log("Start Completed", Preferences.debugging.Value);
         }
 
         void OnDestroy()
         {
-            Log("OnDestroy Started", (bool)Main.debugging.SavedValue);
+            Log("OnDestroy Started", Preferences.debugging.Value);
             if (blackJackInstance != null) { MelonCoroutines.Stop(blackJackInstance); }
             if (jacksOrBetterInstance != null) { MelonCoroutines.Stop(jacksOrBetterInstance); }
-            Log("OnDestroy Completed", (bool)Main.debugging.SavedValue);
+            Log("OnDestroy Completed", Preferences.debugging.Value);
         }
 
         public void SetupRandom()
         {
-            Log("SetupRandom Started", (bool)Main.debugging.SavedValue);
+            Log("SetupRandom Started", Preferences.debugging.Value);
             string seedString = "0123456789";
-            if (!(bool)Main.useSeed.SavedValue)
+            if (!Preferences.useSeed.Value)
             {
                 Random randomSeed = new Random();
                 int randomInt = randomSeed.Next(1, 10);
@@ -91,18 +91,17 @@ namespace GamblingMod
             }
             else
             {
-                seed = Math.Min((int)Main.tableSeed.SavedValue, 0);
+                seed = Preferences.tableSeed.Value;
             }
-            Main.tableSeed.Value = seed;
-            Main.tableSeed.SavedValue = seed;
+            Preferences.tableSeed.Value = seed;
             random = new Random(seed);
-            Log("SetupRandom Complete", (bool)Main.debugging.SavedValue);
+            Log("SetupRandom Complete", Preferences.debugging.Value);
         }
 
         public void SetupStart()
         {
-            Log("SetupStart Started", (bool)Main.debugging.SavedValue);
-            if (!(bool)Main.useSeed.SavedValue)
+            Log("SetupStart Started", Preferences.debugging.Value);
+            if (!Preferences.useSeed.Value)
             {
                 freePlayButton = LoadMenuButton("FreePlay",
                     /*position*/ new Vector3(0f, TABLEHEIGHT - 0.05f, 0.6f),
@@ -115,7 +114,7 @@ namespace GamblingMod
                     });
                 if (freePlayButton != null)
                 {
-                    freePlayButton.transform.GetChild(2).GetComponent<TextMeshPro>().color = freePlay ? Color.green : Color.red;
+                    freePlayButton.transform.GetChild(1).GetComponent<TextMeshPro>().color = freePlay ? Color.green : Color.red;
                 }
             }
             LoadMenuButton("BlackJack",
@@ -128,12 +127,12 @@ namespace GamblingMod
                 /*rotation*/Quaternion.Euler(0, 0, 0), 
                 /*scale*/ new Vector3(1, 1, 1), 
                 () => { LoadGame(Games.JacksOrBetter); });
-            Log("SetupStart Complete", (bool)Main.debugging.SavedValue);
+            Log("SetupStart Complete", Preferences.debugging.Value);
         }
 
         private void LoadGame(Games game)
         {
-            Log("Loading Game: " + game, (bool)Main.debugging.SavedValue);
+            Log("Loading Game: " + game, Preferences.debugging.Value);
             ClearActiveObjects();
             MelonCoroutines.Start(LoadGameCoroutine(game));
         }
@@ -144,13 +143,13 @@ namespace GamblingMod
             switch (game)
             {
                 case Games.BlackJack:
-                    Log("Game BlackJack Started!", (bool)Main.debugging.SavedValue);
+                    Log("Game BlackJack Started!", Preferences.debugging.Value);
                     blackJackInstance = new BlackJack(instance);
                     blackJackInstance.ShowSplash();
                     gameRunningCoroutine = MelonCoroutines.Start(blackJackInstance.Run()); //load game
                     break;
                 case Games.JacksOrBetter:
-                    Log("Game JacksOrBetter Started!", (bool)Main.debugging.SavedValue);
+                    Log("Game JacksOrBetter Started!", Preferences.debugging.Value);
                     jacksOrBetterInstance = new JacksOrBetter(instance);
                     jacksOrBetterInstance.ShowSplash();
                     gameRunningCoroutine = MelonCoroutines.Start(jacksOrBetterInstance.Run()); //load game
@@ -160,26 +159,26 @@ namespace GamblingMod
             }
             yield return gameRunningCoroutine;
             ClearActiveObjects();
-            Log("Game Completed!", (bool)Main.debugging.SavedValue);
+            Log("Game Completed!", Preferences.debugging.Value);
             SetupStart();
             yield break;
         }
 
         public void ClearActiveObjects()
         {
-            Log("Clearing Active Objects", (bool)Main.debugging.SavedValue);
+            Log("Clearing Active Objects", Preferences.debugging.Value);
             Transform activeObjectsSpot = instance.transform.GetChild(2);
             for (int i = activeObjectsSpot.GetChildCount() - 1; i >= 0; i--)
             {
-                Log("Clearing Active Object: " + activeObjectsSpot.GetChild(i).gameObject.name, (bool)Main.debugging.SavedValue);
+                Log("Clearing Active Object: " + activeObjectsSpot.GetChild(i).gameObject.name, Preferences.debugging.Value);
                 GameObject.Destroy(activeObjectsSpot.GetChild(i).gameObject);
             }
-            Log("Done Clearing Active Objects", (bool)Main.debugging.SavedValue);
+            Log("Done Clearing Active Objects", Preferences.debugging.Value);
         }
 
         public GameObject LoadMenuButton(string title, Vector3 position, Quaternion rotation, Vector3 localScale, Action listener = null)
         {
-            Log("Loading Menu Button: " + title, (bool)Main.debugging.SavedValue);
+            Log("Loading Menu Button: " + title, Preferences.debugging.Value);
             GameObject button = (listener != null ? Create.NewButton(listener) : Create.NewButton());
             button.name = title + " Button";
             button.transform.SetParent(this.transform.GetChild(2));
@@ -187,7 +186,7 @@ namespace GamblingMod
             button.transform.localRotation = rotation;
             button.transform.localScale = localScale;
             LoadText(button, title);
-            Log("Done Loading Menu Button: " + title, (bool)Main.debugging.SavedValue);
+            Log("Done Loading Menu Button: " + title, Preferences.debugging.Value);
             return button;
         }
 
@@ -223,7 +222,7 @@ namespace GamblingMod
 
         public GameObject SpawnButton(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale, Action listener = null)
         {
-            Log("Loading Button: " + title, (bool)Main.debugging.SavedValue);
+            Log("Loading Button: " + title, Preferences.debugging.Value);
             GameObject button = (listener != null ? Create.NewButton(listener) : Create.NewButton());
             button.name = title + " Button";
             button.transform.SetParent(parent);
@@ -231,13 +230,13 @@ namespace GamblingMod
             button.transform.localRotation = rotation;
             button.transform.localScale = localScale;
             LoadText(button, title);
-            Log("Done Loading Button: " + title, (bool)Main.debugging.SavedValue);
+            Log("Done Loading Button: " + title, Preferences.debugging.Value);
             return button;
         }
 
         public GameObject SpawnText(Transform parent, string title, Vector3 position, Quaternion rotation, Vector3 localScale)
         {
-            Log("Loading Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Loading Text: " + title, Preferences.debugging.Value);
             GameObject text = Create.NewText();
             text.name = title + " Text";
             text.transform.SetParent(parent);
@@ -245,13 +244,13 @@ namespace GamblingMod
             text.transform.localRotation = rotation;
             text.transform.localScale = localScale;
             text.GetComponent<TextMeshPro>().text = title;
-            Log("Done Loading Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Done Loading Text: " + title, Preferences.debugging.Value);
             return text;
         }
 
         public void LoadText(GameObject button, string title)
         {
-            Log("Loading Menu Button Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Loading Menu Button Text: " + title, Preferences.debugging.Value);
             GameObject text = Create.NewText();
             text.name = title + "Text";
             text.transform.SetParent(button.transform);
@@ -262,7 +261,7 @@ namespace GamblingMod
             textTMP.alignment = TextAlignmentOptions.Center;
             textTMP.enableWordWrapping = false;
             textTMP.text = title;
-            Log("Done Loading Menu Button Text: " + title, (bool)Main.debugging.SavedValue);
+            Log("Done Loading Menu Button Text: " + title, Preferences.debugging.Value);
         }
     }
 }
